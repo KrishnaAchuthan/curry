@@ -1,4 +1,7 @@
 #include "fn.hpp"
+#include <iostream>
+#include <string>
+using std::string;
 
 string greeting(string name, int answer) {
    char buffer[64];

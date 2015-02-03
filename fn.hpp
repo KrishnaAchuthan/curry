@@ -210,4 +210,4 @@ auto fn(F f, A&& ...a)
 -> decltype(fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(f)(std::forward<A>(a)...)) {
      return fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(f)(std::forward<A>(a)...);
 }
-#endf//_fn_hpp_
+#endif//_fn_hpp_
