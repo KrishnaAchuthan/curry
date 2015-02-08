@@ -1,12 +1,9 @@
 #include <iostream>
 #include <string>
+#include <typeinfo>
 using std::string;
 
 #include "fn.hpp"
-
-#include <string>
-#include <iostream>
-using std::string;
 
 string greeting(string name, int answer) {
 	char buffer[64];
@@ -21,10 +18,10 @@ int main() {
 	auto f = fn(greeting);
 	auto result = f("krishna")(_2);
 	auto result2 = result(52);
-	auto result3 = result2(fn(answer_func));
-	auto result4 = result3(10);
+	auto result3 = result2(fn(answer_func))(_2, _3);
+	auto result4 = result3(70);
 	auto result5 = result4(10);
-	//std::cout << result4 << std::endl;
-	std::cout << result5 << std::endl;
+	auto result6 = result5(-10);
+	std::cout << result6 << std::endl;
 	return 0;
 }
