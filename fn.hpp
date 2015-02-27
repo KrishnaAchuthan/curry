@@ -2,10 +2,12 @@
 #define _fn_hpp_
 
 #include <tuple>
+#include <type_traits>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<int>
 struct ph {};
+ph<0> _ ;
 ph<1> _1;
 ph<2> _2;
 ph<3> _3;
@@ -62,8 +64,6 @@ struct arg_positions {
 	using type = typename arg_positions_impl<std::tuple<>, Count>::type;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename T>
-struct arity;
 template<typename F>
 struct function_traits;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,12 +78,6 @@ struct tuple_arity<std::tuple<ph<I>, Rest...>> {
 	static const int rest_arity = tuple_arity<std::tuple<Rest...>>::value;
 	static const int value = (I > rest_arity) ? I : rest_arity;
 };
-//template<int I, typename F, typename ...Rest>
-//struct tuple_arity<std::tuple<std::tuple<int_list<I>, F>, Rest...>> {
-//	static const int this_arity = I + function_traits<F>::arity;
-//	static const int rest_arity = tuple_arity<std::tuple<Rest...>>::value;
-//	static const int value = (this_arity >rest_arity) ? this_arity : rest_arity;
-//};
 template<int I, typename F, typename ...A, typename ...Rest>
 struct tuple_arity<std::tuple<std::tuple<int_list<I>, F, A...>, Rest...>> {
 	static const int this_arity = (I-1) + function_traits<F>::arity - sizeof...(A);
@@ -123,74 +117,90 @@ struct arity_matches {
 	static const bool value = !arity_increasing<A...>::value && (tuple_arity<T>::value == sizeof...(A));
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename> struct sfinae_true : std::true_type {};
+namespace detail {
+	template<typename T> static sfinae_true<decltype(&(std::declval<T>().operator()))> function_operator_exists(int);
+	template<typename T> static std::false_type                                        function_operator_exists(long);
+	template<typename T>
+	struct function_operator_test : decltype(function_operator_exists<T>(0)) {};
+}
 template<typename F>
-struct function_traits {
-	static const int arity = 0;
-	static const bool is_function = false;
-};
-template<typename R, typename ...P>
-struct function_traits<R(*)(P...)> {
+struct function_operator_exists : detail::function_operator_test<F>::type { };
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename R, bool b, int a>
+struct function_traits_helper {
 	using Ret = R;
-	static const int arity = sizeof...(P);
-	static const bool is_function = true;
+	static const bool is_function = b;
+	static const int arity = a;
 };
-template<typename R, typename ...P>
-struct function_traits<R(&)(P...)> {
-	using Ret = R;
-	static const int arity = sizeof...(P);
-	static const bool is_function = true;
+
+template<bool is_function, typename F>
+struct function_traits_impl : function_traits_helper<void, false, 0> {
 };
-template<typename F, typename T>
-struct function_traits<fn_t<F, T>> {
-	using Ret = typename function_traits<F>::Ret;
-	static const int arity = tuple_arity<T>::value;
-	static const bool is_function = true;
+
+template<typename F>
+struct function_traits_impl<true, F> : function_traits_impl<true, decltype(&(std::decay_t<F>)::operator())> {
+	static const int arity = function_traits_impl<true, decltype(&(std::decay_t<F>)::operator())>::arity + 1;
+};
+
+template<typename R, typename T, typename M>
+struct pointer_to_member;
+
+template<bool b, typename R, typename T, typename M>
+struct function_traits_impl<b, pointer_to_member<R, T, M>> : function_traits_helper<R, true, 1> {
+};
+
+template<bool b, typename R, typename ...P>             struct function_traits_impl<b, R(*)(P...)>    : function_traits_helper<R,    true,  sizeof...(P)>{};
+template<bool b, typename R, typename ...P>             struct function_traits_impl<b, R(&)(P...)>    : function_traits_helper<R,    true,  sizeof...(P)>{};
+template<bool b, typename R, typename ...P, typename C> struct function_traits_impl<b, R(C::*)(P...)> : function_traits_helper<R,    true,  sizeof...(P)+1>{};
+template<bool b, typename F, typename T>                struct function_traits_impl<b, fn_t<F, T>>    : function_traits_helper<typename function_traits<F>::Ret, true, tuple_arity<T>::value> {};
+
+template<typename F> struct function_traits : function_traits_impl<function_operator_exists<F>::value, F> {
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+enum class ArgCategory {Regular, Placeholder, AppliedFunction, Function};
 template<typename T>
 struct arg_category_impl {
-	static const int value = 1;
+	static const ArgCategory value = ArgCategory::Regular;
 };
 template<int I>
 struct arg_category_impl<ph<I>> {
-	static const int value = 2;
+	static const ArgCategory value = ArgCategory::Placeholder;
 };
 template<int I, typename F, typename ...A>
 struct arg_category_impl<std::tuple<int_list<I>, F, A...>> {
-	static const int value = 3;
+	static const ArgCategory value = ArgCategory::AppliedFunction;
 };
 template<typename F, typename T>
 struct arg_category_impl<fn_t<F, T>> {
-	static const int value = 4;
+	static const ArgCategory value = ArgCategory::Function;
 };
 template<typename T>
-struct arg_category {
-	static const int value = arg_category_impl<typename std::decay<T>::type>::value;
-};
+using arg_category = std::integral_constant<ArgCategory, arg_category_impl<typename std::decay<T>::type>::value>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<int ArgsCount, typename Item, typename A>
-auto get_conditionally(int_list<1>, Item&& item, A&&) {
+auto get_conditionally(std::integral_constant<ArgCategory, ArgCategory::Regular>, Item&& item, A&&) {
 	return item;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<int I, int J, typename A>
-auto decorate_arg(int_list<J>, A&& a) {
+template<int I, ArgCategory SomethingElse, typename A>
+auto decorate_arg(std::integral_constant<ArgCategory, SomethingElse>, A&& a) {
 	return std::forward<A>(a);
 }
 template<int I, typename A>
-auto decorate_arg(int_list<4>, A&& a) {
+auto decorate_arg(std::integral_constant<ArgCategory, ArgCategory::Function>, A&& a) {
 	return std::make_tuple(int_list<I>(), a);
 }
 template<int ArgsCount, int I, typename A>
 auto get_conditionally_impl1(std::true_type, A&& a) {
-	return decorate_arg<I>(int_list<arg_category<decltype(std::get<I - 1>(a))>::value>(), std::get<I - 1>(std::forward<A>(a)));
+	return decorate_arg<I>(arg_category<decltype(std::get<I - 1>(a))>(), std::get<I - 1>(std::forward<A>(a)));
 }
 template<int ArgsCount, int I, typename A>
 auto get_conditionally_impl1(std::false_type, A&&) {
 	return ph<I - ArgsCount>();
 }
 template<int ArgsCount, int I, typename A>
-auto get_conditionally(int_list<2>, ph<I> item, A&& a) {
+auto get_conditionally(std::integral_constant<ArgCategory, ArgCategory::Placeholder>, ph<I> item, A&& a) {
 	return get_conditionally_impl1<ArgsCount, I>(std::integral_constant<bool, (ArgsCount >= I)>(), std::forward<A>(a));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,13 +217,13 @@ auto get_conditionally_impl2(std::false_type, std::tuple<int_list<I>, F>&& item,
 	return std::make_tuple(int_list<I - ArgsCount>(), std::get<1>(std::forward<std::tuple<int_list<I>, F>>(item)));
 }
 template<int ArgsCount, int I, typename F, typename A>
-auto get_conditionally(int_list<3>, std::tuple<int_list<I>, F> item, A&& a) {
+auto get_conditionally(std::integral_constant<ArgCategory, ArgCategory::AppliedFunction>, std::tuple<int_list<I>, F> item, A&& a) {
 	return get_conditionally_impl2<ArgsCount, I>(std::integral_constant<bool, ArgsCount >= I >(), std::forward<std::tuple<int_list<I>, F>>(item), std::forward<A>(a));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<int ArgsCount, int ...I, typename T, typename A>
 auto apply_arguments(int_list<I...>, T&& t, A&& a) {
-	return std::make_tuple(get_conditionally<ArgsCount>(int_list<arg_category<decltype(std::get<I>(t))>::value>(), std::get<I>(std::forward<T>(t)), std::forward<A>(a))...);
+	return std::make_tuple(get_conditionally<ArgsCount>(arg_category<decltype(std::get<I>(t))>(), std::get<I>(std::forward<T>(t)), std::forward<A>(a))...);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename A>
@@ -229,8 +239,68 @@ auto get_value(std::tuple<F, A...>&& a) {
 	return get_value_impl(typename make_int_list<sizeof...(A)>::type(), std::get<0>(std::forward<std::tuple<F, A...>>(a)), std::forward<std::tuple<F, A...>>(a));
 }
 template<typename F, typename T, int ...I>
-auto apply_tuple_to_function(int_list<I...>, F&& f, T&& t) {
+decltype(auto) apply_tuple_to_function(int_list<I...>, F&& f, T&& t) {
 	return f(get_value(std::get<I>(std::forward<T>(t)))...);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template<typename T, int I, int CurrentIndex>
+struct real_arguments_before_I_impl;
+
+template<typename T, typename ...Rest, int I, int CurrentIndex>
+struct real_arguments_before_I_impl<std::tuple<T, Rest...>, I, CurrentIndex> {
+	static const int value = 1 + real_arguments_before_I_impl<std::tuple<Rest...>, I, CurrentIndex+1>::value;
+};
+
+template<int PlaceholderIndex, typename ...Rest, int I, int CurrentIndex>
+struct real_arguments_before_I_impl<std::tuple<ph<PlaceholderIndex>, Rest...>, I, CurrentIndex> {
+	static const int value = real_arguments_before_I_impl<std::tuple<Rest...>, I, CurrentIndex + 1>::value;
+};
+
+template<int PlaceholderIndex, typename ...Rest, int I, int CurrentIndex>
+struct real_arguments_before_I_impl<std::tuple<ph<PlaceholderIndex>&, Rest...>, I, CurrentIndex> {
+	static const int value = real_arguments_before_I_impl<std::tuple<Rest...>, I, CurrentIndex + 1>::value;
+};
+
+template<typename T, typename ...Rest, int I>
+struct real_arguments_before_I_impl<std::tuple<T, Rest...>, I, I> {
+	static const int value = 0;
+};
+
+template<int PlaceholderIndex, typename ...Rest, int I>
+struct real_arguments_before_I_impl<std::tuple<ph<PlaceholderIndex>, Rest...>, I, I> {
+	static const int value = 0;
+};
+
+template<int PlaceholderIndex, typename ...Rest, int I>
+struct real_arguments_before_I_impl<std::tuple<ph<PlaceholderIndex>&, Rest...>, I, I> {
+	static const int value = 0;
+};
+
+template<int I, int CurrentIndex>
+struct real_arguments_before_I_impl<std::tuple<>, I, CurrentIndex> {
+	static const int value = 0;
+};
+
+template<typename T, int I>
+struct real_arguments_before_I {
+	static const int value = real_arguments_before_I_impl<T, I, 0>::value;
+};
+
+template<int I, typename T, typename Item>
+decltype(auto) correct_anonymous_placeholder_number(Item&& item) {
+	return std::forward<Item>(item);
+}
+template<int I, typename T>
+decltype(auto) correct_anonymous_placeholder_number(ph<0>) {
+	return ph<I+1-real_arguments_before_I<T, I>::value>();
+}
+template<int ...I, typename T>
+decltype(auto) add_anonymous_placeholder_support_impl(int_list<I...>, T&& t) {
+	return std::forward_as_tuple(correct_anonymous_placeholder_number<I, T>(std::get<I>(std::forward<T>(t)))...);
+}
+template<typename T>
+decltype(auto) add_anonymous_placeholder_support(T&& t) {
+	return add_anonymous_placeholder_support_impl(indices_for<T>(), std::forward<T>(t));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename F>
@@ -246,15 +316,20 @@ auto invoke(F&& f, std::true_type, T&& t) {
 }
 template<typename F, typename T, typename ...A>
 auto process(F&& f, T&& t, A&& ...a) {
-	return invoke(std::forward<F>(f), std::integral_constant<bool, arity_matches<T, A...>::value>(), apply_arguments<sizeof...(A)>(indices_for<T>(), std::forward<T>(t), std::forward_as_tuple(std::forward<A>(a)...)));
+	return invoke(std::forward<F>(f), std::integral_constant<bool, arity_matches<T, A...>::value>(), apply_arguments<sizeof...(A)>(indices_for<T>(), std::forward<T>(t), add_anonymous_placeholder_support(std::forward_as_tuple(std::forward<A>(a)...))));
+	//return invoke(std::forward<F>(f), std::integral_constant<bool, arity_matches<T, A...>::value>(), apply_arguments<sizeof...(A)>(indices_for<T>(), std::forward<T>(t), std::forward_as_tuple(std::forward<A>(a)...)));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename F, typename T>
 struct fn_t {
-	fn_t(F f) : _f(f) {}
-	fn_t(F f, T t) : _f(f), _t(t) {}
+	fn_t(F&& f) : _f(std::move(f)) {}
+	fn_t(F&& f, T&& t) : _f(std::move(f)), _t(std::move(t)) {}
 	template<typename ...A>
-	auto operator()(A&&... a) {
+	auto operator()(A&&... a) const& {
+		return process(F(_f), T(_t), std::forward<A>(a)...);
+	}
+	template<typename ...A>
+	auto operator()(A&&... a) && {
 		return process(std::forward<F>(_f), std::forward<T>(_t), std::forward<A>(a)...);
 	}
 private:
@@ -268,6 +343,24 @@ auto fn(F&& f) {
 template<typename F, typename ...A>
 auto fn(F&& f, A&& ...a) {
 	return fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(std::forward<F>(f))(std::forward<A>(a)...);
+}
+
+template<typename R, typename T, typename M>
+struct pointer_to_member {
+	pointer_to_member(const M& m) :_m(m) {}
+
+	               auto& operator()(               T& t) const { return t.*_m; }
+	const          auto& operator()(const          T& t) const { return t.*_m; }
+	      volatile auto& operator()(      volatile T& t) const { return t.*_m; }
+	const volatile auto& operator()(const volatile T& t) const { return t.*_m; }
+
+private:
+	M _m;
+};
+template<typename R, typename T, typename ...A>
+auto fn(R T::* const f, A&& ...a) {
+	using F = pointer_to_member<R, T, R T::*>;
+	return fn(F(f), std::forward<A>(a)...);
 }
 
 #endif//_fn_hpp_
