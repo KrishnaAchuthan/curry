@@ -68,7 +68,9 @@ template<typename F>
 struct function_traits;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename T>
-struct tuple_arity;
+struct tuple_arity {
+	static const int value = function_traits<T>::arity;
+};
 template<typename A, typename ...Rest>
 struct tuple_arity<std::tuple<A, Rest...>> {
 	static const int value = tuple_arity<std::tuple<Rest...>>::value;
@@ -82,13 +84,13 @@ template<int I, typename F, typename ...A, typename ...Rest>
 struct tuple_arity<std::tuple<std::tuple<int_list<I>, F, A...>, Rest...>> {
 	static const int this_arity = (I-1) + function_traits<F>::arity - sizeof...(A);
 	static const int rest_arity = tuple_arity<std::tuple<Rest...>>::value;
-	static const int value = (this_arity >rest_arity) ? this_arity : rest_arity;
+	static const int value = this_arity + rest_arity;
 };
 template<typename F, typename ...A, typename ...Rest>
 struct tuple_arity<std::tuple<std::tuple<F, A...>, Rest...>> {
 	static const int this_arity = 0;
 	static const int rest_arity = tuple_arity<std::tuple<Rest...>>::value;
-	static const int value = (this_arity >rest_arity) ? this_arity : rest_arity;
+	static const int value = (this_arity > rest_arity) ? this_arity : rest_arity;
 };
 template<>
 struct tuple_arity<std::tuple<>> {
@@ -178,7 +180,7 @@ struct arg_category_impl<fn_t<F, T>> {
 template<typename T>
 using arg_category = std::integral_constant<ArgCategory, arg_category_impl<typename std::decay<T>::type>::value>;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<int ArgsCount, typename Item, typename A>
+template<int ArgsCount, typename ArgPosition, typename Item, typename A>
 auto get_conditionally(std::integral_constant<ArgCategory, ArgCategory::Regular>, Item&& item, A&&) {
 	return item;
 }
@@ -191,39 +193,60 @@ template<int I, typename A>
 auto decorate_arg(std::integral_constant<ArgCategory, ArgCategory::Function>, A&& a) {
 	return std::make_tuple(int_list<I>(), a);
 }
-template<int ArgsCount, int I, typename A>
-auto get_conditionally_impl1(std::true_type, A&& a) {
-	return decorate_arg<I>(arg_category<decltype(std::get<I - 1>(a))>(), std::get<I - 1>(std::forward<A>(a)));
+template<int ArgsCount, int I, int ArgPosition, typename A>
+auto get_conditionally_impl1(std::true_type, int_list<ArgPosition>, A&& a) {
+	return decorate_arg<I>(arg_category<decltype(std::get<ArgPosition + I - 1>(a))>(), std::get<ArgPosition + I - 1>(std::forward<A>(a)));
 }
-template<int ArgsCount, int I, typename A>
-auto get_conditionally_impl1(std::false_type, A&&) {
+template<int ArgsCount, int I, int ArgPosition, typename A>
+auto get_conditionally_impl1(std::false_type, int_list<ArgPosition>, A&&) {
 	return ph<I - ArgsCount>();
 }
-template<int ArgsCount, int I, typename A>
+template<int ArgsCount, typename ArgPosition, int I, typename A>
 auto get_conditionally(std::integral_constant<ArgCategory, ArgCategory::Placeholder>, ph<I> item, A&& a) {
-	return get_conditionally_impl1<ArgsCount, I>(std::integral_constant<bool, (ArgsCount >= I)>(), std::forward<A>(a));
+	return get_conditionally_impl1<ArgsCount, I>(std::integral_constant<bool, (ArgsCount >= I)>(), ArgPosition(), std::forward<A>(a));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<int I, int ...J, typename F, typename A>
-auto add_arguments_to_function(int_list<J...>, F&& f, A&& a) {
-	return std::make_tuple(f, std::get<I + J - 1>(std::forward<A>(a))...);
+template<int I, int ArgPosition, int ...J, typename F, typename A>
+auto add_arguments_to_function(int_list<ArgPosition>, int_list<J...>, F&& f, A&& a) {
+	return std::make_tuple(f, std::get<ArgPosition + J>(std::forward<A>(a))...);
 }
-template<int ArgsCount, int I, typename F, typename A>
+template<int ArgsCount, typename ArgPosition, int I, typename F, typename A>
 auto get_conditionally_impl2(std::true_type, std::tuple<int_list<I>, F>&& item, A&& a) {
-	return add_arguments_to_function<I>(typename make_int_list<function_traits<typename std::remove_reference<F>::type>::arity>::type(), std::get<1>(std::forward<std::tuple<int_list<I>, F>>(item)), std::forward<A>(a));
+	return add_arguments_to_function<I>(ArgPosition(), typename make_int_list<function_traits<typename std::remove_reference<F>::type>::arity>::type(), std::get<1>(std::forward<std::tuple<int_list<I>, F>>(item)), std::forward<A>(a));
 }
-template<int ArgsCount, int I, typename F, typename A>
+template<int ArgsCount, typename ArgPosition, int I, typename F, typename A>
 auto get_conditionally_impl2(std::false_type, std::tuple<int_list<I>, F>&& item, A&&) {
 	return std::make_tuple(int_list<I - ArgsCount>(), std::get<1>(std::forward<std::tuple<int_list<I>, F>>(item)));
 }
-template<int ArgsCount, int I, typename F, typename A>
+template<typename Result, int RunningTotal, typename T>
+struct arg_start_indices_impl;
+
+template<typename ...Result, int RunningTotal, typename T, typename ...Rest>
+struct arg_start_indices_impl<std::tuple<Result...>, RunningTotal, std::tuple<T, Rest...>> {
+	static const int arg_start_index = RunningTotal;
+	using type = typename arg_start_indices_impl<std::tuple<Result..., int_list<arg_start_index>>, arg_start_index, std::tuple<Rest...>>::type;
+};
+template<typename ...Result, int RunningTotal, int I, typename F, typename ...A, typename ...Rest>
+struct arg_start_indices_impl<std::tuple<Result...>, RunningTotal, std::tuple<std::tuple<int_list<I>, F, A...>, Rest...>> {
+	using T = std::tuple<int_list<I>, F, A...>;
+	static const int arg_start_index = RunningTotal + tuple_arity<std::tuple<T>>::value;
+	using type = typename arg_start_indices_impl<std::tuple<Result..., int_list<RunningTotal>>, arg_start_index, std::tuple<Rest...>>::type;
+};
+template<typename ...Result, int RunningTotal>
+struct arg_start_indices_impl<std::tuple<Result...>, RunningTotal, std::tuple<>> {
+	using type = std::tuple<Result...>;
+};
+template<typename T>
+struct arg_start_indices : arg_start_indices_impl<std::tuple<>, 0, T> {
+};
+template<int ArgsCount, typename ArgPosition, int I, typename F, typename A>
 auto get_conditionally(std::integral_constant<ArgCategory, ArgCategory::AppliedFunction>, std::tuple<int_list<I>, F> item, A&& a) {
-	return get_conditionally_impl2<ArgsCount, I>(std::integral_constant<bool, ArgsCount >= I >(), std::forward<std::tuple<int_list<I>, F>>(item), std::forward<A>(a));
+	return get_conditionally_impl2<ArgsCount, ArgPosition, I>(std::integral_constant<bool, ArgsCount >= I >(), std::forward<std::tuple<int_list<I>, F>>(item), std::forward<A>(a));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<int ArgsCount, int ...I, typename T, typename A>
 auto apply_arguments(int_list<I...>, T&& t, A&& a) {
-	return std::make_tuple(get_conditionally<ArgsCount>(arg_category<decltype(std::get<I>(t))>(), std::get<I>(std::forward<T>(t)), std::forward<A>(a))...);
+	return std::make_tuple(get_conditionally<ArgsCount, std::tuple_element_t<I, typename arg_start_indices<T>::type>>(arg_category<decltype(std::get<I>(t))>(), std::get<I>(std::forward<T>(t)), std::forward<A>(a))...);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename A>
@@ -317,7 +340,6 @@ auto invoke(F&& f, std::true_type, T&& t) {
 template<typename F, typename T, typename ...A>
 auto process(F&& f, T&& t, A&& ...a) {
 	return invoke(std::forward<F>(f), std::integral_constant<bool, arity_matches<T, A...>::value>(), apply_arguments<sizeof...(A)>(indices_for<T>(), std::forward<T>(t), add_anonymous_placeholder_support(std::forward_as_tuple(std::forward<A>(a)...))));
-	//return invoke(std::forward<F>(f), std::integral_constant<bool, arity_matches<T, A...>::value>(), apply_arguments<sizeof...(A)>(indices_for<T>(), std::forward<T>(t), std::forward_as_tuple(std::forward<A>(a)...)));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename F, typename T>

@@ -48,13 +48,17 @@ struct A {
 int answer_func(int a, int b, A c, string s) {
 	return a + b + c._value;
 }
+int simple_func(int a, int b) {
+	return a + b;
+}
 
 int main() {
 	A a(22);
 	auto f1 = answer_func(10, 10, a, "hello");
 	auto f2 = fn(answer_func)(10)(10)(a)("hello");
+	auto f21 = fn(answer_func)(10)(fn(answer_func))(13)(27)(a)("hi")(a)("hello");
 
-	std::cout << f1 << ", " << f2 << std::endl;
+	std::cout << f1 << ", " << f2 << ", " << f21 << std::endl;
 
 	auto f3 = fn(&A::_value);
 	auto f4 = f3(a);
@@ -63,5 +67,23 @@ int main() {
 	auto f5 = fn(answer_func);
 	auto f6 = f5(_, 20, _, _);
     auto f7 = f6(10, a, "hi");
-	std::cout << f7;
+	std::cout << f7 << std::endl;
+
+	auto f71 = fn(simple_func);
+	auto f711 = f71(fn(simple_func));
+	auto f712 = f711(5);
+	auto f72 = f712(7);
+	auto f73 = f72(13);
+	std::cout << typeid(f73).name() << std::endl;
+
+	auto f8 = fn(simple_func);
+	auto f9 = f8(20);
+	auto f10 = f9(fn(simple_func));
+	auto f11 = f10(10);
+	auto f12 = f11(30);
+	std::cout << typeid(f8).name() << std::endl;
+	std::cout << typeid(f9).name() << std::endl;
+	std::cout << typeid(f10).name() << std::endl;
+	std::cout << typeid(f11).name() << std::endl;
+	std::cout << typeid(f12).name() << std::endl;
 }
