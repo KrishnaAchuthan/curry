@@ -27,7 +27,8 @@ struct arg_start_indices_impl<std::tuple<Result...>, RunningTotal, std::tuple<>>
 };
 
 template<typename T>
-struct arg_start_indices : arg_start_indices_impl<std::tuple<>, 0, T> {
+struct arg_start_indices 
+     : arg_start_indices_impl<std::tuple<>, 0, T> {
 };
 
 #endif//_ARG_START_INDICES_HPP_
