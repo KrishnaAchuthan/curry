@@ -6,7 +6,7 @@
 
 template<typename T, typename ...A>
 struct arity_matches {
-	static const bool value = !arity_increasing<A...>::value && (tuple_arity<T>::value == sizeof...(A));
+   static const bool value = !arity_increasing<A...>::value && (tuple_arity<T>::value == sizeof...(A));
 };
 
 #endif//_ARITY_MATCHES_HPP_

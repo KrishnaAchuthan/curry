@@ -18,12 +18,12 @@ ph<10> _10;
 
 template<typename T>
 struct is_placeholder {
-	static const bool value = false;
+   static const bool value = false;
 };
 
 template<int I>
 struct is_placeholder<ph<I>> {
-	static const bool value = true;
+   static const bool value = true;
 };
 
 #endif//_PLACEHOLDER_HPP_

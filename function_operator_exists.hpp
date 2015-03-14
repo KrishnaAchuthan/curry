@@ -5,21 +5,21 @@
 
 namespace detail {
 
-	template<typename> 
-	struct sfinae_true : std::true_type {
-	};
+   template<typename> 
+   struct sfinae_true : std::true_type {
+   };
 
-	template<typename T> 
-	static sfinae_true<decltype(&(std::declval<T>().operator()))> 
-		function_operator_exists(int);
+   template<typename T> 
+   static sfinae_true<decltype(&(std::declval<T>().operator()))> 
+      function_operator_exists(int);
 
-	template<typename T> 
-	static std::false_type 
-		function_operator_exists(long);
+   template<typename T> 
+   static std::false_type 
+      function_operator_exists(long);
 
-	template<typename T>
-	struct function_operator_test : decltype(function_operator_exists<T>(0)) {
-	};
+   template<typename T>
+   struct function_operator_test : decltype(function_operator_exists<T>(0)) {
+   };
 
 }
 
