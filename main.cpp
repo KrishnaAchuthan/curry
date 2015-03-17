@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <vector>
 using std::string;
 
 #include "fn.hpp"
+#include "boxed_collection.hpp"
 
 //string greeting(string name, int answer) {
 //   return "hello " + name + " and the answer is:" + std::to_string(answer);
@@ -52,6 +54,10 @@ int simple_func(int a, int b) {
    return a + b;
 }
 
+int one_more_simple_func(int a, int b, int c) {
+   return a + b + c;
+}
+
 int main() {
    A a(22);
    auto f1 = answer_func(10, 10, a, "hello");
@@ -86,4 +92,71 @@ int main() {
    std::cout << typeid(f10).name() << std::endl;
    std::cout << typeid(f11).name() << std::endl;
    std::cout << typeid(f12).name() << std::endl;
+
+   std::vector<int> v1;
+   v1.push_back(19);
+   v1.push_back(17);
+
+   std::vector<int> v2;
+   v2.push_back(23);
+   v2.push_back(49);
+
+   auto f13 = fn(simple_func);
+   auto f14 = f13(with_each(v1));
+   auto f15 = f14(with_each(v2));
+   std::cout << typeid(f15).name() << std::endl;
+
+   std::vector<int> v3;
+   v3.push_back(7);
+   v3.push_back(13);
+
+   auto f16 = fn(one_more_simple_func);
+   auto f17 = f16(with_each(v1));
+   auto f18 = f17(with_each(v2));
+   auto f19 = f18(with_each(v3));
+   std::cout << typeid(f19).name() << std::endl;
 }
+/*
+global function
+member function
+member data
+lambda
+functor
+
+regular invocation
+partial application
+
+template<typename F, typename A1, typename A2, typename A3, typename A4>
+void test_curried_application_normal(F&& f, A1&& a1, A2&& a2, A3&& a3, typename A4&& a4) {
+   f(a1, a2)(a3)(a4);
+   f(a1, a2, a3)(a4);
+   f(a1, a2, a3, a4);
+   f(a1)(a2, a3)(a4);
+   f(a1, a2)(a3, a4);
+   std::forward<F>(f)(std::forward<A1>(a1))(std::forward<A2>(a2))(std::forward<A3>(a3))(std::forward<A4>(a4));
+}
+
+template<typename F, typename A1, typename A2, typename A3, typename A4>
+void test_curried_application_placeholders(F&& f, A1&& a1, A2&& a2, A3&& a3, typename A4&& a4) {
+   f(a1, a2)(a3)(a4);
+   f(a1, a2, a3)(a4);
+   f(a1, a2, a3, a4);
+   f(a1)(a2, a3)(a4);
+   f(a1, a2)(a3, a4);
+   std::forward<F>(f)(std::forward<A1>(a1))(std::forward<A2>(a2))(std::forward<A3>(a3))(std::forward<A4>(a4));
+}
+
+curried application with placeholders
+curried application with placeholders switching
+curried application with anonymous placeholders
+
+curried application with composition normal
+curried application with composition with placeholders
+curried application with composition with placeholders switching
+curried application with composition with anonymous placeholders
+
+curried application with nested composition normal
+curried application with nested composition with placeholders
+curried application with nested composition with placeholders switching
+curried application with nested composition with anonymous placeholders
+*/

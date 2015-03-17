@@ -10,6 +10,7 @@
 
 template<typename F, typename T>
 struct fn_t {
+
    fn_t(F&& f) 
    : _f(std::move(f)) {
    }
