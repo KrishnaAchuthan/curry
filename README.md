@@ -41,7 +41,7 @@
 
 ```cpp
    auto f1 = fn(foo);                      //foo takes four arguments.
-   auto f2 = f1(_4, _1, _3, _2);           //Arguments passed in are reordered while calling foo.
+   auto f2 = f1(_4, _1, _3, _2);           //Reorder arguments.
    auto f3 = f2(arg1, arg2, arg3, arg4);   //Calls foo(arg4, arg1, arg3, arg2)
 ```
 
