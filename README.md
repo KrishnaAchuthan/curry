@@ -4,13 +4,11 @@ Supports the following features:
 
 1. Supports global, member, functor and lambda functions. Also support member variables, just like boost::bind and std::bind 
 
-'''
-   auto f1 = fn(foo);      //foo is a global function
-   auto f2 = fn(&A::bar);  //bar is a member function of class or struct A
-   auto f3 = fn(B());      //B is a class or struct with an overloaded () operator
-   auto f4 = fn([](auto arg1) { return arg1*10.0; }); //anonymous lambda
-   auto f5 = fn(&std::pair::second) //creates a one argument function that takes an std::pair and returns its second value
-'''
+    auto f1 = fn(foo);      //foo is a global function
+    auto f2 = fn(&A::bar);  //bar is a member function of class or struct A
+    auto f3 = fn(B());      //B is a class or struct with an overloaded () operator
+    auto f4 = fn([](auto arg1) { return arg1*10.0; }); //anonymous lambda
+    auto f5 = fn(&std::pair::second) //creates a one argument function that takes an std::pair and returns its second value
 
 2. Partial application of functions
 
