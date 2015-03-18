@@ -1,5 +1,6 @@
 ###Support for Curry and Function Composition in C++
 
+
 #####1. Global, Member, Functor and Lambda Functions as well as Member Variables.
 
 ```cpp
@@ -16,6 +17,7 @@
     auto f5 = fn(&std::pair::second); 
 ```
 
+
 #####2. Partial application of functions
 
 ```cpp
@@ -25,6 +27,7 @@
     //The remaining two arguments are supplied here. Calls foo(arg1, arg2, arg3, arg4);
     partially_applied(arg3, arg4);
 ```
+
 
 #####3. Currying of functions
 
@@ -37,6 +40,7 @@
    auto the_rest_applied_and_invoked = some_more_applied(arg4);
 ```
 
+
 #####4. Placeholders
 
 ```cpp
@@ -44,6 +48,7 @@
    auto f2 = f1(_4, _1, _3, _2);           //Reorder arguments.
    auto f3 = f2(arg1, arg2, arg3, arg4);   //Calls foo(arg4, arg1, arg3, arg2)
 ```
+
 
 #####5. Anonymous Placeholders
 
@@ -54,6 +59,7 @@
    //Remaining arguments provided. Invokes foo(arg3, arg1, arg3, arg4)
    auto f3 = f2(arg3, arg4);
 ```
+
 
 #####6. Function composition
 
