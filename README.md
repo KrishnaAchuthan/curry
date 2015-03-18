@@ -86,14 +86,17 @@
    //result will be a vector with 12 values {49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83}
 ```
 
-####Short Term Future Features
+####Short Term Features
+* compile on GCC and clang
+* use constexpr
+* add test cases
 * maybe (Maybe Monad?)
 * uncurry (expand a tuple into multiple arguments to a function)
 * Composition Operator *
 * Pipeline Operator |
 
 
-####Long Term Future Features
+####Long Term Features
 * Validate function signature at compile time (type_check)
 * Validate each argument's type as they are applied
 * Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
