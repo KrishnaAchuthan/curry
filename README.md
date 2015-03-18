@@ -42,8 +42,8 @@
 #####5. Anonymous Placeholders
 
 ```cpp
-   auto f1 = fn(foo);               //foo takes four arguments
-   auto f2 = f1(_, arg1, arg2, _);  //Some arguments are applied and waits for more
+   auto f1 = fn(foo);                //foo takes four arguments
+   auto f2 = f1(_, arg1, arg2, _);   //Some arguments are applied and waits for more
    auto f3 = f2(arg3, arg4);         //Calls foo(arg3, arg1, arg3, arg4)
 ```
 
