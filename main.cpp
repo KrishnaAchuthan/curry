@@ -54,7 +54,7 @@ int simple_func(int a, int b) {
    return a + b;
 }
 
-int one_more_simple_func(int a, int b, int c) {
+int add_three_numbers(int a, int b, int c) {
    return a + b + c;
 }
 
@@ -93,28 +93,24 @@ int main() {
    std::cout << typeid(f11).name() << std::endl;
    std::cout << typeid(f12).name() << std::endl;
 
-   std::vector<int> v1;
-   v1.push_back(19);
-   v1.push_back(17);
-
-   std::vector<int> v2;
-   v2.push_back(23);
-   v2.push_back(49);
+   std::vector<int> v1 = { 19,17,21 };
+   std::vector<int> v2 = { 23,49 };
+   std::vector<int> v3 = { 7, 13 };
 
    auto f13 = fn(simple_func);
    auto f14 = f13(with_each(v1));
    auto f15 = f14(with_each(v2));
    std::cout << typeid(f15).name() << std::endl;
 
-   std::vector<int> v3;
-   v3.push_back(7);
-   v3.push_back(13);
-
-   auto f16 = fn(one_more_simple_func);
+   auto f16 = fn(add_three_numbers);
    auto f17 = f16(with_each(v1));
    auto f18 = f17(with_each(v2));
    auto f19 = f18(with_each(v3));
    std::cout << typeid(f19).name() << std::endl;
+
+   auto adder = fn(add_three_numbers);
+   auto result = adder(with_each(v1), with_each(v2), with_each(v3));
+   std::cout << typeid(f21).name() << std::endl;
 }
 /*
 global function

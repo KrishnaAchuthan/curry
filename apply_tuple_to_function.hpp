@@ -27,7 +27,7 @@ auto selective_get(std::integral_constant<int, I>, std::integral_constant<int, i
 
 template<int I, typename T>
 auto selective_get(std::integral_constant<int, I>, std::integral_constant<int, I>, T&& t) {
-   return ph<I>();
+   return ph<1>();
 }
 
 template<int index, typename F, typename T, int ...I>
