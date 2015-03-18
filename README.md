@@ -3,11 +3,11 @@
 #####1. Global, Member, Functor and Lambda Functions. as well as Member Variables
 
 ```cpp
-    auto f1 = fn(foo);                                  //foo is a global function
-    auto f2 = fn(&A::bar);                              //bar is a member function of class or struct A
-    auto f3 = fn(B());                                  //B is a class or struct with an overloaded () operator
-    auto f4 = fn([](auto arg1) { return arg1*10.0; });  //anonymous lambda
-    auto f5 = fn(&std::pair::second)                    //creates a one argument function 
+    auto f1 = fn(foo);                                 //foo is a global function
+    auto f2 = fn(&A::bar);                             //bar is a member function of class or struct A
+    auto f3 = fn(B());                                 //B is a class or struct with an overloaded () operator
+    auto f4 = fn([](auto arg1) { return arg1*10.0; }); //anonymous lambda
+    auto f5 = fn(&std::pair::second)                   //creates a one argument function 
 ```
 
 #####2. Partial application of functions
