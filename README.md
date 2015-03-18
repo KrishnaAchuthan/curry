@@ -1,6 +1,6 @@
 ###Support for Curry and Function Composition in C++
 
-#####1. Global, Member, Functor and Lambda Functions. as well as Member Variables
+#####1. Global, Member, Functor and Lambda Functions as well as Member Variables.
 
 ```cpp
     auto f1 = fn(foo);            //Global function.
@@ -50,7 +50,9 @@
 ```cpp
    auto f1 = fn(foo);                      //foo takes four arguments.
    auto f2 = f1(_, arg1, arg2, _);         //Some arguments are applied. It waits for more.
-   auto f3 = f2(arg3, arg4);               //Remaining arguments provided. Invokes foo(arg3, arg1, arg3, arg4)
+   
+   //Remaining arguments provided. Invokes foo(arg3, arg1, arg3, arg4)
+   auto f3 = f2(arg3, arg4);
 ```
 
 #####6. Function composition
