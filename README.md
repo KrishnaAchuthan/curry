@@ -69,7 +69,7 @@
    auto f3 = f2(arg4, arg5);
 ```
 
-#####7. Boxes (Monad???, Applicative Functors???)
+#####7. Boxes (Monads???, Applicative Functors???)
 
 ```cpp
    int add_three_numbers(int a, int b, int c) {
@@ -86,10 +86,35 @@
    //result will be a vector with 12 values { 49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83 }
 ```
 
-####Future Features Planned
+####Short Term Future Features
 
-#####1. Composition operator *
+#####1. maybe (Maybe Monad?)
 
-#####2. Pipeline operator |
+#####2. uncurry (expand a tuple into multiple arguments to a function)
 
-#####3. 
+#####3. Composition Operator *
+
+#####4. Pipeline Operator |
+
+
+####Long Term Future Features
+
+#####1. Validate function signature at compile time (type_check)
+
+#####2. Validate each argument's type as they are applied
+
+#####3. Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
+
+#####4. MonadDo macro to simulate haskell do syntax
+
+#####5. Utility functions such as if_, switch_, etc to help design function flow
+
+
+####Pipe Dreams
+
+#####1. List comprehesion
+
+#####2. Algebraic Data Types
+
+#####3. Pattern Matching
+
