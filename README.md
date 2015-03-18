@@ -87,34 +87,22 @@
 ```
 
 ####Short Term Future Features
-
 * maybe (Maybe Monad?)
-
 * uncurry (expand a tuple into multiple arguments to a function)
-
 * Composition Operator *
-
 * Pipeline Operator |
 
 
 ####Long Term Future Features
-
-#######1. Validate function signature at compile time (type_check)
-
-#######2. Validate each argument's type as they are applied
-
-#######3. Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
-
-#######4. MonadDo macro to simulate haskell do syntax
-
-#######5. Utility functions such as if_, switch_, etc to help design function flow
+* Validate function signature at compile time (type_check)
+* Validate each argument's type as they are applied
+* Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
+* MonadDo macro to simulate haskell do syntax
+* Utility functions such as if_, switch_, etc to help design function flow
 
 
 ####Pipe Dreams
-
-#######1. List comprehesion
-
-#######2. Algebraic Data Types
-
-#######3. Pattern Matching
+* List comprehesion
+* Algebraic Data Types
+* Pattern Matching
 
