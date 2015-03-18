@@ -88,13 +88,13 @@
 
 ####Short Term Future Features
 
-######* maybe (Maybe Monad?)
+* maybe (Maybe Monad?)
 
-######* uncurry (expand a tuple into multiple arguments to a function)
+* uncurry (expand a tuple into multiple arguments to a function)
 
-#######3. Composition Operator *
+* Composition Operator *
 
-#######4. Pipeline Operator |
+* Pipeline Operator |
 
 
 ####Long Term Future Features
