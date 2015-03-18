@@ -83,7 +83,7 @@
    auto adder  = fn(add_three_numbers);
    auto result = adder(with_each(v1), with_each(v2), with_each(v3));
 
-   //result will be a vector with 12 values { 49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83 }
+   //result will be a vector with 12 values {49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83}
 ```
 
 ####Short Term Future Features
