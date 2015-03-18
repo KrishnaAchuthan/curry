@@ -1,7 +1,7 @@
 #Support for Curry and Function Composition in C++
 
 #####1. Global, Member, Functor and Lambda Functions. as well as Member Variables
-'''cpp
+'''c++
     auto f1 = fn(foo);               //foo is a global function
     auto f2 = fn(&A::bar);           //bar is a member function of class or struct A
     auto f3 = fn(B());               //B is a class or struct with an overloaded () operator
