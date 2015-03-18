@@ -57,7 +57,7 @@
    //[working on a better syntax for this, using a composition operator...]
    auto f2 = f1(arg1, fn(bar), arg2, arg3);
    
-   // calls foo(arg1, bar(arg4, arg5), arg2, arg3)
+   //Calls foo(arg1, bar(arg4, arg5), arg2, arg3)
    auto f3 = f2(arg4, arg5);
 ```
 
