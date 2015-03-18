@@ -68,3 +68,28 @@
    //Calls foo(arg1, bar(arg4, arg5), arg2, arg3)
    auto f3 = f2(arg4, arg5);
 ```
+
+#####7. Boxes (Monad???, Applicative Functors???)
+
+```cpp
+   int add_three_numbers(int a, int b, int c) {
+      return a + b + c;
+   }
+
+   std::vector<int> v1 = { 19,17,21 };
+   std::vector<int> v2 = { 23,49 };
+   std::vector<int> v3 = { 7, 13 };
+
+   auto adder  = fn(add_three_numbers);
+   auto result = adder(with_each(v1), with_each(v2), with_each(v3));
+
+   //result will be a vector with 12 values { 49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83 }
+```
+
+####Future Features Planned
+
+#####1. Composition operator *
+
+#####2. Pipeline operator |
+
+#####3. 
