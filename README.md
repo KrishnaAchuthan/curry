@@ -88,9 +88,9 @@
 
 ####Short Term Future Features
 
-#######1. maybe (Maybe Monad?)
+######* maybe (Maybe Monad?)
 
-#######2. uncurry (expand a tuple into multiple arguments to a function)
+######* uncurry (expand a tuple into multiple arguments to a function)
 
 #######3. Composition Operator *
 
