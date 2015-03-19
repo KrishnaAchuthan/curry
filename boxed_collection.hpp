@@ -8,21 +8,35 @@ template<typename Vector>
 struct boxed_vector;
 
 template<typename T, typename Alloc>
+struct boxed_vector<const std::vector<T, Alloc>&> {
+   using collection_type = std::vector<T, Alloc>;
+   boxed_vector(const collection_type& v) : _v(v) {
+   }
+   const collection_type& _v;
+};
+
+template<typename T, typename Alloc>
+struct boxed_vector<std::vector<T, Alloc>&> {
+   using collection_type = std::vector<T, Alloc>;
+   boxed_vector(collection_type& v) : _v(v) {
+   }
+   collection_type& _v;
+};
+
+template<typename T, typename Alloc>
 struct boxed_vector<std::vector<T, Alloc>> {
    using collection_type = std::vector<T, Alloc>;
    boxed_vector() : _v() {
    }
    boxed_vector(collection_type&& v) : _v(std::move(v)) {
    }
-   boxed_vector(const collection_type& v) : _v(v) {
-   }
    collection_type _v;
 };
 
-template<typename T, typename Alloc>
-struct isabox<boxed_vector<std::vector<T, Alloc>>> : std::true_type {
-   using collection_type = std::vector<T, Alloc>;
-   using value_type = T;
+template<typename T>
+struct isabox<boxed_vector<T>> : std::true_type {
+   using collection_type = std::decay_t<T>;
+   using value_type = typename collection_type::value_type;
 
    template<typename OtherT>
    struct box_map_value_t {
@@ -39,39 +53,39 @@ struct isabox<boxed_vector<std::vector<T, Alloc>>> : std::true_type {
       f(item);
    }
 
-   template<typename F>
-   static void box_map_impl(const boxed_vector<collection_type>& collection, F f) {
-      using new_collection_type = std::vector<typename box_map_value_t<T>::type>; //(std::vector<decltype(f(*collection._v.begin())), Alloc>;
+   template<typename OtherT, typename F>
+   static void box_map_impl(const boxed_vector<OtherT>& collection, F f) {
+      using new_collection_type = std::vector<typename box_map_value_t<typename std::decay_t<T>::value_type>::type>; //(std::vector<decltype(f(*collection._v.begin())), Alloc>;
       using return_type = boxed_vector<new_collection_type>;
-      return_type ret;
+      new_collection_type ret;
       for (auto&& item : collection._v) {
-         box_map_impl(item, [&ret](auto&& item) {ret._v.push_back(item); });
+         box_map_impl(item, [&ret](auto&& item) {ret.push_back(item); });
       }
-      for (auto&& item : ret._v) {
+      for (auto&& item : ret) {
          f(item);
       }
    }
 
    template<typename F>
-   static auto box_map(const boxed_vector<collection_type>& collection, F f) {
-      using new_collection_type = std::vector<typename box_map_value_t<T>::type>; //(std::vector<decltype(f(*collection._v.begin())), Alloc>;
+   static auto box_map(const boxed_vector<T>& collection, F f) {
+      using new_collection_type = std::vector<typename box_map_value_t<value_type>::type>; //(std::vector<decltype(f(*collection._v.begin())), Alloc>;
       using return_type = boxed_vector<new_collection_type>;
-      return_type ret;
+      new_collection_type ret;
       for (auto&& item : collection._v) {
-         box_map_impl(f(item), [&ret](auto&& item) {ret._v.push_back(item); });
+         box_map_impl(f(item), [&ret](auto&& item) {ret.push_back(item); });
       }
-      return ret;
+      return return_type(std::move(ret));
    }
 };
 
-template<typename T, typename Alloc>
-auto with_each(const std::vector<T, Alloc>& v) {
-   return boxed_vector<std::vector<T, Alloc>>(v);
+template<typename T>
+auto with_each(T& v) {
+   return boxed_vector<T&>(v);
 }
 
-template<typename T, typename Alloc>
-auto with_each(std::vector<T, Alloc>&& v) {
-   return boxed_vector<std::vector<T, Alloc>>(std::move(v));
+template<typename T>
+auto with_each(T&& v) {
+   return boxed_vector<T>(std::move(v));
 }
 
 #endif//_BOXED_COLLECTION_HPP_
