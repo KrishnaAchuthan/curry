@@ -55,14 +55,14 @@ struct isabox<boxed_vector<T>> : std::true_type {
 
    template<typename OtherT, typename F>
    static void box_map_impl(const boxed_vector<OtherT>& collection, F f) {
-      using new_collection_type = std::vector<typename box_map_value_t<typename std::decay_t<T>::value_type>::type>; //(std::vector<decltype(f(*collection._v.begin())), Alloc>;
+      using new_collection_type = std::vector<typename box_map_value_t<typename std::decay_t<OtherT>::value_type>::type>; //(std::vector<decltype(f(*collection._v.begin())), Alloc>;
       using return_type = boxed_vector<new_collection_type>;
       new_collection_type ret;
       for (auto&& item : collection._v) {
          box_map_impl(item, [&ret](auto&& item) {ret.push_back(item); });
       }
       for (auto&& item : ret) {
-         f(item);
+         f(item); //why not directly call instead of an intermediate vector?
       }
    }
 

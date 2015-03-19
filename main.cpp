@@ -6,6 +6,7 @@ using std::string;
 
 #include "fn.hpp"
 #include "boxed_collection.hpp"
+#include "maybe.hpp"
 
 //string greeting(string name, int answer) {
 //   return "hello " + name + " and the answer is:" + std::to_string(answer);
@@ -132,12 +133,33 @@ int main() {
       }
    }
    print_vector(result2);
+
+   auto value1 = maybe(10);
+   auto value2 = maybe(25);
+   auto value3 = maybe(30);
+
+   auto added_maybes1 = fn(add_three_numbers)(value1, value2)(value3);
+   if (added_maybes1.is_valid()) {
+      std::cout << added_maybes1.get() << std::endl;
+   }
+   else {
+      std::cout << "no result" << std::endl;
+   }
+
+   auto added_maybes2 = fn(add_three_numbers)(value1, maybe<int>())(value3);
+   if (added_maybes2.is_valid()) {
+      std::cout << added_maybes2.get() << std::endl;
+   }
+   else {
+      std::cout << "no result" << std::endl;
+   }
+}
+
    //std::cout << typeid(f21).name() << std::endl;
    //for (auto&& item : result._v) {
    //   std::cout << item << ", ";
    //}
    //std::cout << std::endl;
-}
 /*
 global function
 member function
