@@ -20,8 +20,8 @@ struct function_traits_impl
 
 template<typename F>
 struct function_traits_impl<true, F> 
-    : function_traits_impl<true, decltype(&(std::decay_t<F>)::operator())>{
-   static const int arity = function_traits_impl<true, decltype(&(std::decay_t<F>)::operator())>::arity + 1;
+     : function_traits_impl<true, decltype(&(std::decay_t<F>::operator()))> {
+   static const int arity = function_traits_impl<true, decltype(&std::decay_t<F>::operator())>::arity + 1;
 };
 
 template<bool b, typename R, typename T, typename M>

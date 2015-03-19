@@ -111,6 +111,10 @@ int main() {
    auto adder = fn(add_three_numbers);
    auto result = adder(with_each(v1), with_each(v2), with_each(v3));
    std::cout << typeid(f21).name() << std::endl;
+   for (auto&& item : result._v) {
+      std::cout << item << ", ";
+   }
+   std::cout << std::endl;
 }
 /*
 global function

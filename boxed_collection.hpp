@@ -24,9 +24,9 @@ struct isabox<boxed_vector<std::vector<T, Alloc>>> : std::true_type {
    using collection_type = std::vector<T, Alloc>;
    using value_type = T;
 
-   template<typename T>
+   template<typename OtherT>
    struct box_map_value_t {
-      using type = T;
+      using type = OtherT;
    };
 
    template<typename OtherT, typename OtherAlloc>
