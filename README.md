@@ -88,7 +88,9 @@
 
 Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 
-####Short Term Features
+###Features planned for the future
+
+####Short term
 * use constexpr
 * add test cases
 * maybe (Maybe Monad?)
@@ -98,7 +100,7 @@ Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 * operator overloads for placeholders to enable on the fly function creation [ ex: (27 * _) ]
 
 
-####Long Term Features
+####Long term
 * Validate function signature at compile time (type_check)
 * Validate each argument's type as they are applied
 * Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
@@ -108,7 +110,7 @@ Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 * Use std::integer_sequence and std::integral_constant instead of the custom built int_list
 
 
-####Pipe Dreams
+####Pipe dreams
 * List comprehesion
 * Algebraic Data Types
 * Pattern Matching
