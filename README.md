@@ -86,8 +86,9 @@
    //result will be a vector with 12 values {49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83}
 ```
 
+Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
+
 ####Short Term Features
-* compile on GCC and clang
 * use constexpr
 * add test cases
 * maybe (Maybe Monad?)
