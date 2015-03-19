@@ -16,7 +16,7 @@
     auto f5 = fn(&std::pair::second); 
 ```
 
-#####2. Partial application of functions
+#####2. Partial application of Functions
 
 ```cpp
     //foo is a function that takes four arguments. Two are partially applied here.
@@ -26,7 +26,7 @@
     partially_applied(arg3, arg4);
 ```
 
-#####3. Currying of functions
+#####3. Currying of Functions
 
 ```cpp
    //foo is a function that takes four arguments.
@@ -55,7 +55,7 @@
    auto f3 = f2(arg3, arg4);
 ```
 
-#####6. Function composition
+#####6. Function Composition
 
 ```cpp
    //foo takes four arguments
