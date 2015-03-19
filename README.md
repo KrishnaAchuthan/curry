@@ -69,7 +69,7 @@
    auto f3 = f2(arg4, arg5);
 ```
 
-#####7. Boxes (Monads???, Applicative Functors???)
+#####7. With Each (Binding containers to values just like Monads and Applicative Functors)
 
 ```cpp
    int add_three_numbers(int a, int b, int c) {
