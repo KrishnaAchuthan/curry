@@ -104,6 +104,8 @@ Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 * Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
 * MonadDo macro to simulate haskell do syntax
 * Utility functions such as if_, switch_, etc to help design function flow
+* Use std::placeholder instead of the custom one
+* Use std::integer_sequence and std::integral_constant instead of the custom built int_list
 
 
 ####Pipe Dreams
