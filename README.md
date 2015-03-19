@@ -95,6 +95,7 @@ Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 * uncurry (expand a tuple into multiple arguments to a function)
 * Composition Operator *
 * Pipeline Operator |
+* operator overloads for placeholders to enable on the fly function creation [ ex: (27 * _) ]
 
 
 ####Long Term Features
