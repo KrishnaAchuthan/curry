@@ -86,14 +86,40 @@
    //result will be a vector with 12 values {49, 55, 75, 81, 47, 53, 73, 79, 51, 57, 77, 83}
 ```
 
+
+#####8. Maybe
+
+```cpp
+   int add_three_numbers(int a, int b, int c) {
+      return a + b + c;
+   }
+
+   auto value1 = maybe(10);
+   auto value2 = maybe(20);
+   auto value3 = maybe(30);
+
+   auto adder  = fn(add_three_numbers);
+   auto result = adder(value1, value2, value3);
+
+   //result will maybe_t<int>(60)
+
+   auto value4 = maybe(10);
+   auto value5 = maybe_t<int>();
+   auto value6 = maybe(30);
+
+   auto adder  = fn(add_three_numbers);
+   auto result = adder(value4, value5, value6);
+
+   //result will maybe_t<int>() which is empty since value5 is empty
+   
+```
+
 Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 
 ###Features planned for the future
 
 ####Short term
-* use constexpr
 * add test cases
-* maybe (Maybe Monad?)
 * uncurry (expand a tuple into multiple arguments to a function)
 * Composition Operator *
 * Pipeline Operator |
