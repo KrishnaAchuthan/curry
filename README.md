@@ -1,7 +1,6 @@
 ###Support for Curry and Function Composition in C++
 
-#####1. Can be enabled on - 
-        Global, Member, Functor and Lambda Functions as well as Member Variables.
+#####1. Can be enabled on - Global, Member, Functor and Lambda Functions as well as Member Variables.
 
 ```cpp
     auto f1 = fn(foo);            //Global function.
