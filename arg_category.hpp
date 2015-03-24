@@ -28,8 +28,8 @@ struct arg_category_impl<std::tuple<int_list<I>, F, A...>> {
    static const ArgCategory value = ArgCategory::AppliedFunction;
 };
 
-template<typename F, typename T>
-struct arg_category_impl<fn_t<F, T>> {
+template<typename F>
+struct arg_category_impl<cfn_t<F>> {
    static const ArgCategory value = ArgCategory::Function;
 };
 

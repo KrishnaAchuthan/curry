@@ -9,7 +9,7 @@
 #include <type_traits>
 
 template<typename F, typename T, typename ...A>
-constexpr decltype(auto) process(F&& f, T&& t, A&& ...a) {
+ConstExpr decltype(auto) process(F&& f, T&& t, A&& ...a) {
    return invoke(std::forward<F>(f), std::integral_constant<bool, arity_matches<T, A...>::value>(), apply_arguments<sizeof...(A)>(indices_for<T>(), std::forward<T>(t), add_anonymous_placeholder_support(std::forward_as_tuple(std::forward<A>(a)...))));
 }
 

@@ -33,6 +33,14 @@ $RECYCLE.BIN/
 *.tlog
 *.lastbuildstate
 
+Debug/
+Release/
+fn.sln.ide/
+
+*.jrs
+*.chk
+*.ide
+
 # =========================
 # Operating System Files
 # =========================

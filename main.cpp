@@ -1,12 +1,12 @@
+#include "fn.hpp"
+#include "boxed_collection.hpp"
+#include "maybe.hpp"
+#include "operators.hpp"
 #include <iostream>
 #include <string>
 #include <typeinfo>
 #include <vector>
 using std::string;
-
-#include "fn.hpp"
-#include "boxed_collection.hpp"
-#include "maybe.hpp"
 
 //string greeting(string name, int answer) {
 //   return "hello " + name + " and the answer is:" + std::to_string(answer);
@@ -76,12 +76,12 @@ int main() {
    // auto f7 = f6(10, a, "hi");
    //std::cout << f7 << std::endl;
 
-   //auto f71 = fn(simple_func);
-   //auto f711 = f71(fn(simple_func));
-   //auto f712 = f711(5);
-   //auto f72 = f712(7);
-   //auto f73 = f72(13);
-   //std::cout << typeid(f73).name() << std::endl;
+   auto f71 = fn(simple_func);
+   auto f711 = f71 * simple_func;
+   auto f712 = f711(5);
+   auto f72 = f712(7);
+   auto f73 = f72(13);
+   std::cout << typeid(f73).name() << std::endl;
 
    //auto f8 = fn(simple_func);
    //auto f9 = f8(20);
@@ -153,6 +153,9 @@ int main() {
    else {
       std::cout << "no result" << std::endl;
    }
+
+   auto hw = (_ + std::string("world"))("hello ");
+   std::cout << hw;
 }
 
    //std::cout << typeid(f21).name() << std::endl;

@@ -50,8 +50,8 @@ struct function_traits_impl<b, fn_t<F, T>>
 };
 
 template<typename F>
-struct function_traits 
-    : function_traits_impl<function_operator_exists<F>::value, F> {
+struct function_traits
+   : function_traits_impl<function_operator_exists<F>::value, F> {
 };
 
 #endif//_FUNCTION_TRAITS_HPP_

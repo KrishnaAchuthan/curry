@@ -7,7 +7,7 @@
 #include <tuple>
 
 template<int ArgsCount, int ...I, typename T, typename A>
-constexpr decltype(auto) apply_arguments(int_list<I...>, T&& t, A&& a) {
+ConstExpr decltype(auto) apply_arguments(int_list<I...>, T&& t, A&& a) {
    return std::make_tuple(get_conditionally<ArgsCount, 
                                            std::tuple_element_t<I, typename arg_start_indices<T>::type>
                                            >
