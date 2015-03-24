@@ -35,8 +35,13 @@ struct function_traits_impl<b, R(*)(P...)>
 };
 
 template<bool b, typename R, typename ...P>
-struct function_traits_impl<b, R(&)(P...)> 
-    : function_traits_helper<R, true, sizeof...(P)> {
+struct function_traits_impl<b, R(&)(P...)>
+   : function_traits_helper<R, true, sizeof...(P)>{
+};
+
+template<bool b, typename R, typename ...P>
+struct function_traits_impl<b, R(P...)>
+   : function_traits_helper<R, true, sizeof...(P)>{
 };
 
 template<bool b, typename R, typename ...P, typename C>

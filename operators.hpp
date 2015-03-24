@@ -19,6 +19,16 @@ auto operator * (fn_t<F, T>&& f, A&& a) {
    return compose(std::forward<fn_t<F, T>>(f), std::forward<A>(a));
 }
 
+template<typename F, typename typename T, typename A>
+auto operator | (A&& a, const fn_t<F, T>& f) {
+   return compose(f, std::forward<A>(a));
+}
+
+template<typename F, typename typename T, typename A>
+auto operator | (A&& a, fn_t<F, T>&& f) {
+   return compose(std::forward<fn_t<F, T>>(f), std::forward<A>(a));
+}
+
 template<typename F>
 struct op_t {
    op_t(F&& f) : _f(f) {}

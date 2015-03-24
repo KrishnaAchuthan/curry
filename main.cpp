@@ -154,6 +154,24 @@ int main() {
       std::cout << "no result" << std::endl;
    }
 
+   auto added_maybes3 = value1
+                      | fn(add_three_numbers)(_, maybe<int>(), value3);
+   if (added_maybes3.is_valid()) {
+      std::cout << added_maybes3.get() << std::endl;
+   }
+   else {
+      std::cout << "no result" << std::endl;
+   }
+   
+   auto added_maybes4 = fn(add_three_numbers)(_, maybe<int>(), value3) * value1;
+   if (added_maybes4.is_valid()) {
+      std::cout << added_maybes4.get() << std::endl;
+   }
+   else {
+      std::cout << "no result" << std::endl;
+   }
+
+
    auto hw = (_ + std::string("world"))("hello ");
    std::cout << hw;
 }
