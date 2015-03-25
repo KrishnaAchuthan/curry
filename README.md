@@ -55,21 +55,20 @@
    auto f3 = f2(arg3, arg4);
 ```
 
-#####6. Function Composition
+#####6. Function Composition ( Using composition operator '*' )
 
 ```cpp
    //foo takes four arguments
    auto f1 = fn(foo);
    
    //bar is a function that takes two arguments. It is composed in.
-   //[working on a better syntax for this, using a composition operator...]
-   auto f2 = f1(arg1, fn(bar), arg2, arg3);
+   auto f2 = f1(arg1, _, arg2, arg3) * bar;
    
    //Calls foo(arg1, bar(arg4, arg5), arg2, arg3)
    auto f3 = f2(arg4, arg5);
 ```
 
-#####7. With Each (Binding containers to values just like Monads and Applicative Functors)
+#####7. With Each ( Binding containers to values just like Monads and Applicative Functors )
 
 ```cpp
    int add_three_numbers(int a, int b, int c) {
@@ -113,6 +112,15 @@
    //result will maybe_t<int>() which is empty since value5 is empty
    
 ```
+
+#####9. Pipe Operator '|'
+
+```cpp
+   auto print = fn([](const std::string& str) { std::cout << str << std::endl; });
+   auto world = _ + std::string("world");
+   "hello " | world | print;
+```
+
 
 Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 
