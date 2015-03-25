@@ -172,8 +172,15 @@ int main() {
    }
 
 
-   auto hw = (_ + std::string("world"))("hello ");
-   std::cout << hw;
+   auto print = fn([](const std::string& str) { std::cout << str << std::endl; });
+   auto world = _ + std::string("world");
+   "hello " | world | print;
+
+   auto times10 = _ * 10;
+   auto result21 = times10(4.2);
+
+   auto greaterThan42 = 42 < _;
+   auto result22 = 32 | greaterThan42;
 }
 
    //std::cout << typeid(f21).name() << std::endl;

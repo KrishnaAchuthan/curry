@@ -29,6 +29,11 @@ auto operator | (A&& a, fn_t<F, T>&& f) {
    return compose(std::forward<fn_t<F, T>>(f), std::forward<A>(a));
 }
 
+template<typename F1, typename typename T1, typename F2, typename T2>
+auto operator | (const fn_t<F1, T1>& f1, const fn_t<F2, T2>& f2) {
+   return compose(f2, f1);
+}
+
 template<typename F>
 struct op_t {
    op_t(F&& f) : _f(f) {}
@@ -103,6 +108,66 @@ auto operator % (ph<I> lhs, Rhs&& rhs) {
 template<typename Lhs, int I>
 auto operator % (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs % rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator > (ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
+}
+
+template<typename Lhs, int I>
+auto operator > (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator < (ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs < rhs; }))(lhs, rhs);
+}
+
+template<typename Lhs, int I>
+auto operator < (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs < rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator >=(ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs >= rhs; }))(lhs, rhs);
+}
+
+template<typename Lhs, int I>
+auto operator >= (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs >= rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator <= (ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs <= rhs; }))(lhs, rhs);
+}
+
+template<typename Lhs, int I>
+auto operator <= (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs <= rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator == (ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs == rhs; }))(lhs, rhs);
+}
+
+template<typename Lhs, int I>
+auto operator == (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs == rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator != (ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs != rhs; }))(lhs, rhs);
+}
+
+template<typename Lhs, int I>
+auto operator != (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs != rhs; }))(lhs, rhs);
 }
 
 template<int I>

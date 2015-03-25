@@ -19,9 +19,9 @@ struct function_traits_impl
 };
 
 template<typename F>
-struct function_traits_impl<true, F> 
-     : function_traits_impl<true, decltype(&(std::decay_t<F>::operator()))> {
-   static const int arity = function_traits_impl<true, decltype(&std::decay_t<F>::operator())>::arity + 1;
+struct function_traits_impl<true, F>
+   : function_traits_impl<true, decltype(&std::decay_t<F>::operator())>{
+   static const int arity = function_traits_impl<true, decltype(&std::decay_t<F>::operator())>::arity - 1;
 };
 
 template<bool b, typename R, typename T, typename M>
@@ -44,9 +44,14 @@ struct function_traits_impl<b, R(P...)>
    : function_traits_helper<R, true, sizeof...(P)>{
 };
 
-template<bool b, typename R, typename ...P, typename C>
-struct function_traits_impl<b, R(C::*)(P...)> 
-    : function_traits_helper<R, true, sizeof...(P)+1> {
+template<typename R, typename ...P, typename C>
+struct function_traits_impl<true, R(C::*)(P...)>
+   : function_traits_helper<R, true, sizeof...(P)+1>{
+};
+
+template<typename R, typename ...P, typename C>
+struct function_traits_impl<true, R(C::*)(P...) const>
+   : function_traits_helper<R, true, sizeof...(P)+1>{
 };
 
 template<bool b, typename F, typename T>
