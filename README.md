@@ -121,6 +121,15 @@
    "hello " | world | print;
 ```
 
+#####10. On the fly function creation with anonymous placeholder
+
+```cpp
+   auto times10 = _ * 10;
+   auto result1 = times10(4.2); //result1 will be 42.0
+   
+   auto greaterThan42 = 42 < _;
+   auto result2 = 32 | greaterThan42; //result2 will be false
+```
 
 Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 
@@ -129,10 +138,6 @@ Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 ####Short term
 * add test cases
 * unpack (expand a tuple into multiple arguments to a function)
-* Composition Operator *
-* Pipeline Operator |
-* operator overloads for placeholders to enable on the fly function creation [ ex: (27 * _) ]
-
 
 ####Long term
 * Validate function signature at compile time (type_check)
