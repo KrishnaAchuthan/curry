@@ -121,7 +121,7 @@
    "hello " | world | print;
 ```
 
-#####10. On the fly function creation with anonymous placeholder
+#####10. On the fly function creation with placeholders
 
 ```cpp
    auto times10 = _ * 10;
