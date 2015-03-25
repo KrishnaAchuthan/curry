@@ -100,7 +100,7 @@
    auto adder  = fn(add_three_numbers);
    auto result = adder(value1, value2, value3);
 
-   //result will maybe_t<int>(60)
+   //result will be maybe_t<int>(60)
 
    auto value4 = maybe(10);
    auto value5 = maybe_t<int>();
@@ -109,7 +109,7 @@
    auto adder  = fn(add_three_numbers);
    auto result = adder(value4, value5, value6);
 
-   //result will maybe_t<int>() which is empty since value5 is empty
+   //result will be maybe_t<int>() which is empty since value5 is empty
    
 ```
 
@@ -118,7 +118,7 @@
 ```cpp
    auto print = fn([](const std::string& str) { std::cout << str << std::endl; });
    auto world = _ + std::string("world");
-   "hello " | world | print;
+   "hello " | world | print; //prints "hello world" to the console
 ```
 
 #####10. On the fly function creation with placeholders
