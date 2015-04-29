@@ -76,7 +76,7 @@ auto fmap(F f, immutable_list<T> lst) {
 }
 
 template<class T, class P>
-immutable_list<T> filter(P p, immutable_list<T> lst) {
+auto filter(P p, immutable_list<T> lst) {
    using U = decltype(f(std::declval<T>()));
    static_assert(std::is_convertible<F, std::function<U(T)>>::value, "filter requires a function type U(T)");
    if (empty(lst)) {
@@ -133,4 +133,3 @@ auto show(immutable_list<T> lst) {
 }
 
 #endif//_IMMUTABLE_LIST_HPP_
-
