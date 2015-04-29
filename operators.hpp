@@ -60,6 +60,11 @@ struct function_traits<op_t<F>> {
    static const int arity = 2;
 };
 
+template<int I, int J>
+auto operator + (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs + rhs; }))(lhs, rhs);
+}
+
 template<int I, typename Rhs>
 auto operator + (ph<I> lhs, Rhs&& rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs + rhs; }))(lhs, rhs);
@@ -68,6 +73,11 @@ auto operator + (ph<I> lhs, Rhs&& rhs) {
 template<typename Lhs, int I>
 auto operator + (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs + rhs; }))(lhs, rhs);
+}
+
+template<int I, int J>
+auto operator - (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs - rhs; }))(lhs, rhs);
 }
 
 template<int I, typename Rhs>
@@ -80,6 +90,11 @@ auto operator - (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs - rhs; }))(lhs, rhs);
 }
 
+template<int I, int J>
+auto operator * (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs * rhs; }))(lhs, rhs);
+}
+
 template<int I, typename Rhs>
 auto operator * (ph<I> lhs, Rhs&& rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs * rhs; }))(lhs, rhs);
@@ -88,6 +103,11 @@ auto operator * (ph<I> lhs, Rhs&& rhs) {
 template<typename Lhs, int I>
 auto operator * (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs * rhs; }))(lhs, rhs);
+}
+
+template<int I, int J>
+auto operator / (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs / rhs; }))(lhs, rhs);
 }
 
 template<int I, typename Rhs>
@@ -100,6 +120,11 @@ auto operator / (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs / rhs; }))(lhs, rhs);
 }
 
+template<int I, int J>
+auto operator % (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs % rhs; }))(lhs, rhs);
+}
+
 template<int I, typename Rhs>
 auto operator % (ph<I> lhs, Rhs&& rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs % rhs; }))(lhs, rhs);
@@ -110,13 +135,23 @@ auto operator % (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs % rhs; }))(lhs, rhs);
 }
 
-template<int I, typename Rhs>
-auto operator > (ph<I> lhs, Rhs&& rhs) {
+template<int I, int J>
+auto operator > (ph<I> lhs, ph<J> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
 }
 
 template<typename Lhs, int I>
 auto operator > (Lhs&& lhs, ph<I> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
+}
+
+template<int I, typename Rhs>
+auto operator > (ph<I> lhs, Rhs&& rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
+}
+
+template<int I, int J>
+auto operator < (ph<I> lhs, ph<J> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
 }
 
@@ -130,6 +165,11 @@ auto operator < (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs < rhs; }))(lhs, rhs);
 }
 
+template<int I, int J>
+auto operator >=(ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs >= rhs; }))(lhs, rhs);
+}
+
 template<int I, typename Rhs>
 auto operator >=(ph<I> lhs, Rhs&& rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs >= rhs; }))(lhs, rhs);
@@ -138,6 +178,11 @@ auto operator >=(ph<I> lhs, Rhs&& rhs) {
 template<typename Lhs, int I>
 auto operator >= (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs >= rhs; }))(lhs, rhs);
+}
+
+template<int I, int J>
+auto operator <= (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs <= rhs; }))(lhs, rhs);
 }
 
 template<int I, typename Rhs>
@@ -150,6 +195,11 @@ auto operator <= (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs <= rhs; }))(lhs, rhs);
 }
 
+template<int I, int J>
+auto operator == (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs == rhs; }))(lhs, rhs);
+}
+
 template<int I, typename Rhs>
 auto operator == (ph<I> lhs, Rhs&& rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs == rhs; }))(lhs, rhs);
@@ -158,6 +208,11 @@ auto operator == (ph<I> lhs, Rhs&& rhs) {
 template<typename Lhs, int I>
 auto operator == (Lhs&& lhs, ph<I> rhs) {
    return fn(op([](auto&& lhs, auto&& rhs) {return lhs == rhs; }))(lhs, rhs);
+}
+
+template<int I, int J>
+auto operator != (ph<I> lhs, ph<J> rhs) {
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs != rhs; }))(lhs, rhs);
 }
 
 template<int I, typename Rhs>
