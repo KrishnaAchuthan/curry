@@ -131,6 +131,32 @@
    auto result2 = 32 | greaterThan42; //result2 will be false
 ```
 
+#####11. Immutable list (Code inspired by Bartosz Milewski's SimpleList)
+
+```cpp
+   auto lst = make_list<int>({1,2,3,4,5,6,7,8,9});
+   
+   auto lst2 = tail(lst); //lst2 will be [2,3,4,5,6,7,8,9]
+   auto val = head(lst2); //val will be 2
+   auto lst3 = 1 + lst2; //lst3 will be [1,2,3,4,5,6,7,8,9]
+   
+   auto is_lst_empty = empty(lst); //result will be false
+
+   auto second_item_of_lst3 = head(tail(lst3)); //result will be 2
+
+   auto square = fmap(_1*_1); //on the fly function creation with curried fmap application
+   auto fmap_result = square(lst3); //result will be [1,2,9,16,25,36,49,64,81]
+
+   auto sum = foldl(_+_, 0);     //on the fly function creation with curried foldl application
+   auto product = foldr(_*_, 1); //on the fly function creation with curried foldr application
+
+   auto sum_result = sum(lst3);  //result will be 45
+   std::cout << sum_result << std::endl;
+
+   auto product_result = lst3 | product; //result will be 362880
+   std::cout << product_result << std::endl;
+```
+
 Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
 
 ###Features planned for the future
