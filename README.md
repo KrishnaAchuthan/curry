@@ -147,8 +147,8 @@
    auto square = fmap(_1*_1); //on the fly function creation with curried fmap application
    auto fmap_result = square(lst3); //result will be [1,2,9,16,25,36,49,64,81]
 
-   auto sum = foldl(_+_, 0);     //on the fly function creation with curried foldl application
-   auto product = foldr(_*_, 1); //on the fly function creation with curried foldr application
+   auto sum = foldl(_+_, 0);     //curried foldl application
+   auto product = foldr(_*_, 1); //curried foldr application
 
    auto sum_result = sum(lst3);  //result will be 45
    std::cout << sum_result << std::endl;
