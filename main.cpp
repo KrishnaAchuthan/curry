@@ -2,12 +2,14 @@
 #include "boxed_collection.hpp"
 #include "maybe.hpp"
 #include "operators.hpp"
+#include "immutable_list.hpp"
+
 #include <iostream>
 #include <string>
 #include <typeinfo>
 #include <vector>
 using std::string;
-
+#include "immutable_list.hpp"
 //string greeting(string name, int answer) {
 //   return "hello " + name + " and the answer is:" + std::to_string(answer);
 //}
@@ -60,6 +62,23 @@ int add_three_numbers(int a, int b, int c) {
 }
 
 int main() {
+   auto lst1 = make_list<int>();
+   auto lst2 = 10 + lst1;
+   auto lst3 = 20 + lst2;
+
+   auto is_lst1_empty = empty(lst1);
+   auto is_lst2_empty = empty(lst2);
+   auto is_lst3_empty = empty(lst3);
+
+   //auto lst1_size = size(lst1);
+   //auto lst2_size = size(lst2);
+   //auto lst3_size = size(lst3);
+
+   auto head2 = head(lst2);
+   auto head3 = head(lst3);
+
+   auto second_item_of_lst3 = head(tail(lst3));
+
    //A a(22);
    //auto f1 = answer_func(10, 10, a, "hello");
    //auto f2 = fn(answer_func)(10)(10)(a)("hello");
