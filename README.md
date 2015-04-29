@@ -156,27 +156,3 @@
    auto product_result = lst3 | product; //result will be 362880
    std::cout << product_result << std::endl;
 ```
-
-Compiles on MSVC 2015 as well as GCC 4.92, Clang 3.6.0 with std=c++1y switch.
-
-###Features planned for the future
-
-####Short term
-* add test cases
-* unpack (expand a tuple into multiple arguments to a function)
-
-####Long term
-* Validate function signature at compile time (type_check)
-* Validate each argument's type as they are applied
-* Visitor pattern to insert debugging functions inbetween nested invocations to help debug the flow of calls
-* MonadDo macro to simulate haskell do syntax
-* Utility functions such as if_, switch_, etc to help design function flow
-* Use std::placeholder instead of the custom one
-* Use std::integer_sequence and std::integral_constant instead of the custom built int_list
-
-
-####Pipe dreams
-* List comprehesion
-* Algebraic Data Types
-* Pattern Matching
-
