@@ -4,6 +4,8 @@
 #include "..\arity\function_traits.hpp"
 #include "..\placeholders\placeholder.hpp"
 
+namespace curry {
+
 template<typename F, typename A, typename ...Rest>
 auto compose(F&& f, A&& a, Rest&&... rest) {
    return (std::forward<F>(f)).compose(std::forward<A>(a), std::forward<Rest>(rest)...);
@@ -243,6 +245,8 @@ auto operator + (ph<I> rhs) {
 template<int I>
 auto operator - (ph<I> rhs) {
    return fn(op([](auto&& rhs) {return -rhs; }))(rhs);
+}
+
 }
 
 #endif

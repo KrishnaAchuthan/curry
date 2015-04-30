@@ -42,6 +42,8 @@ int add_three_numbers(int a, int b, int c) {
 }
 
 int main() {
+   using namespace curry;
+
    auto lst1 = make_list<int>({ 3,4,5,6,7,8,9 });
    auto lst2 = 2 + lst1;
    auto lst3 = 1 + lst2;

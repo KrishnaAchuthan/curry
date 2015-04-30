@@ -4,6 +4,8 @@
 #include "..\monads\isabox.hpp"
 #include <vector>
 
+namespace curry {
+
 template<typename Vector>
 struct boxed_vector;
 
@@ -86,6 +88,8 @@ auto with_each(T& v) {
 template<typename T>
 auto with_each(T&& v) {
    return boxed_vector<T>(std::move(v));
+}
+
 }
 
 #endif//_BOXED_COLLECTION_HPP_

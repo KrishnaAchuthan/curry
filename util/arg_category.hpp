@@ -6,6 +6,8 @@
 #include "..\placeholders\placeholder.hpp"
 #include <tuple>
 
+namespace curry {
+
 enum class ArgCategory { 
    Regular, 
    Placeholder, 
@@ -36,5 +38,7 @@ struct arg_category_impl<cfn_t<F>> {
 template<typename T>
 using arg_category = 
       std::integral_constant<ArgCategory, arg_category_impl<typename std::decay<T>::type>::value>;
+
+}
 
 #endif//_ARG_CATEGORY_HPP_

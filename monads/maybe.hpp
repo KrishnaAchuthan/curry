@@ -4,6 +4,8 @@
 #include "..\monads\isabox.hpp"
 #include <vector>
 
+namespace curry {
+
 template<typename T>
 struct maybe_t {
    maybe_t() : _value(), _is_valid(false) {
@@ -103,6 +105,8 @@ auto maybe(T* value) {
 template<typename T>
 auto maybe(T&& value) {
    return maybe_t<T>(std::move(value));
+}
+
 }
 
 #endif//_MAYBE_HPP_

@@ -1,6 +1,8 @@
 #ifndef _POINTER_TO_MEMBER_HPP_
 #define _POINTER_TO_MEMBER_HPP_
 
+namespace curry {
+
 template<typename R, typename T, typename M>
 struct pointer_to_member {
    
@@ -27,5 +29,7 @@ struct pointer_to_member {
 private:
    M _m;
 };
+
+}
 
 #endif//_POINTER_TO_MEMBER_HPP_

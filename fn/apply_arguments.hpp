@@ -6,6 +6,8 @@
 #include "..\util\int_list.hpp"
 #include <tuple>
 
+namespace curry {
+
 template<int ArgsCount, int ...I, typename T, typename A>
 CONSTEXPR decltype(auto) apply_arguments(int_list<I...>, T&& t, A&& a) {
    return std::make_tuple(get_conditionally<ArgsCount, 
@@ -16,6 +18,8 @@ CONSTEXPR decltype(auto) apply_arguments(int_list<I...>, T&& t, A&& a) {
                         std::forward<A>(a)
                        )...
                     );
+}
+
 }
 
 #endif//_APPLY_ARGUMENTS_HPP_

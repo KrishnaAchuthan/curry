@@ -5,6 +5,8 @@
 #include <tuple>
 #include <type_traits>
 
+namespace curry {
+
 template<int current_index, typename T, typename Enabler=void>
 struct get_first_box_argument_index_impl;
 
@@ -26,5 +28,7 @@ struct get_first_box_argument_index_impl<current_index, std::tuple<>, void> {
 template<typename T>
 struct get_first_box_argument_index : get_first_box_argument_index_impl<0, T> {
 };
+
+}
 
 #endif//_GET_FIRST_BOX_ARGUMENT_INDEX_HPP_

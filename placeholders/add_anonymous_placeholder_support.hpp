@@ -7,6 +7,8 @@
 #include <tuple>
 #include <type_traits>
 
+namespace curry {
+
 template<int I, typename T, typename Item>
 CONSTEXPR decltype(auto) correct_anonymous_placeholder_number(Item&& item) {
    return std::forward<Item>(item);
@@ -25,6 +27,8 @@ CONSTEXPR decltype(auto) add_anonymous_placeholder_support_impl(int_list<I...>, 
 template<typename T>
 CONSTEXPR decltype(auto) add_anonymous_placeholder_support(T&& t) {
    return add_anonymous_placeholder_support_impl(indices_for<T>(), std::forward<T>(t));
+}
+
 }
 
 #endif//_ADD_ANONYMOUS_PLACEHOLDER_SUPPORT_HPP_

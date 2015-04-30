@@ -3,6 +3,8 @@
 
 #include <tuple>
 
+namespace curry {
+
 template<typename Result, int Count>
 struct arg_positions_impl;
 
@@ -20,5 +22,7 @@ template<int Count>
 struct arg_positions {
    using type = typename arg_positions_impl<std::tuple<>, Count>::type;
 };
+
+}
 
 #endif//_ARG_POSITIONS_HPP_

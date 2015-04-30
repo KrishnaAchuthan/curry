@@ -3,8 +3,12 @@
 
 #include <type_traits>
 
+namespace curry {
+
 template<typename T>
 struct isabox : std::false_type {
 };
+
+}
 
 #endif//_IS_A_BOX_HPP_

@@ -3,6 +3,8 @@
 
 #include <tuple>
 
+namespace curry {
+
 template<int ...I>
 struct int_list {
 };
@@ -27,5 +29,7 @@ struct make_int_list {
 
 template<typename T>
 using indices_for = typename make_int_list<std::tuple_size<T>::value>::type;
+
+}
 
 #endif//_INT_LIST_HPP_

@@ -3,12 +3,13 @@
 
 #include "..\arity\function_traits.hpp"
 #include "..\util\fn_fwd.hpp"
-
 #include <cassert>
 #include <functional>
 #include <iostream>
 #include <initializer_list>
 #include <memory>
+
+namespace curry {
 
 template<typename T>
 struct immutable_list {
@@ -210,5 +211,7 @@ struct function_traits<show_impl> {
    static const int arity = 1;
 };
 auto show = fn(show_impl());
+
+}
 
 #endif//_IMMUTABLE_LIST_HPP_

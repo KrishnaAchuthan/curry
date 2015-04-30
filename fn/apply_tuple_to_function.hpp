@@ -7,6 +7,8 @@
 #include <tuple>
 #include <type_traits>
 
+namespace curry {
+
 template<typename A>
 CONSTEXPR decltype(auto) get_value(A&& a) {
    return std::forward<A>(a);
@@ -52,6 +54,8 @@ CONSTEXPR decltype(auto) apply_tuple_to_function(std::integral_constant<int, -1>
 template<typename F, typename T1, typename T2, int ...I>
 CONSTEXPR decltype(auto) apply_tuple_to_function(std::integral_constant<int, -1>, int_list<I...>, fn_t<F, T1>&& f, T2&& t) {
    return f(get_value(std::get<I>(std::forward<T2>(t)))...);
+}
+
 }
 
 #endif//_APPLY_TUPLE_TO_FUNCTION_HPP_

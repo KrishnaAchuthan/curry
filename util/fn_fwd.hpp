@@ -8,6 +8,8 @@
 #define CONSTEXPR constexpr
 #endif
 
+namespace curry {
+
 template<typename F, typename T>
 struct fn_t;
 
@@ -28,5 +30,7 @@ struct pointer_to_member;
 
 template<typename F>
 struct cfn_t;
+
+}
 
 #endif//_FN_FWD_HPP_

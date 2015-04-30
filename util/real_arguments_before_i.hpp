@@ -4,6 +4,8 @@
 #include "placeholders\placeholder.hpp"
 #include <tuple>
 
+namespace curry {
+
 template<typename T, int I, int CurrentIndex>
 struct real_arguments_before_I_impl;
 
@@ -46,5 +48,7 @@ template<typename T, int I>
 struct real_arguments_before_I {
    static const int value = real_arguments_before_I_impl<T, I, 0>::value;
 };
+
+}
 
 #endif//_REAL_ARGUMENTS_BEFORE_I_HPP_

@@ -10,6 +10,8 @@
 #include <tuple>
 #include <type_traits>
 
+namespace curry {
+
 template<typename F, typename T>
 struct fn_t {
 
@@ -68,5 +70,7 @@ struct cfn_t {
    }
    F&& _f;
 };
+
+}
 
 #endif//_FN_HPP_

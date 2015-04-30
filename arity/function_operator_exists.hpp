@@ -3,6 +3,8 @@
 
 #include <type_traits>
 
+namespace curry {
+
 namespace detail {
 
    template<typename> 
@@ -26,5 +28,7 @@ namespace detail {
 template<typename F>
 struct function_operator_exists : detail::function_operator_test<F>::type {
 };
+
+}
 
 #endif//_FUNCTION_OPERATOR_EXISTS_HPP_

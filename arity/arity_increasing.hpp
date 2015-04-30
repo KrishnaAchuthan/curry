@@ -4,6 +4,8 @@
 #include "..\placeholders\placeholder.hpp"
 #include "..\util\fn_fwd.hpp"
 
+namespace curry {
+
 template<typename ...A>
 struct arity_increasing;
 
@@ -32,5 +34,7 @@ template<int I, typename ...Rest>
 struct arity_increasing<ph<I>&, Rest...> {
    static const bool value = true;
 };
+
+}
 
 #endif//_ARITY_INCREASING_HPP_

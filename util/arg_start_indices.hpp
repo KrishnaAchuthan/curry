@@ -5,6 +5,8 @@
 #include "..\util\int_list.hpp"
 #include <tuple>
 
+namespace curry {
+
 template<typename Result, int RunningTotal, typename T>
 struct arg_start_indices_impl;
 
@@ -30,5 +32,7 @@ template<typename T>
 struct arg_start_indices 
      : arg_start_indices_impl<std::tuple<>, 0, T> {
 };
+
+}
 
 #endif//_ARG_START_INDICES_HPP_

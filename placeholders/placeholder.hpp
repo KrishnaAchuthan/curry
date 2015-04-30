@@ -1,6 +1,8 @@
 #ifndef _PLACEHOLDER_HPP_
 #define _PLACEHOLDER_HPP_
 
+namespace curry {
+
 template<int>
 struct ph {};
 
@@ -25,5 +27,7 @@ template<int I>
 struct is_placeholder<ph<I>> {
    static const bool value = true;
 };
+
+}
 
 #endif//_PLACEHOLDER_HPP_

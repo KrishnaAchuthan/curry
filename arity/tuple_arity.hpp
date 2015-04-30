@@ -5,6 +5,8 @@
 #include "..\placeholders\placeholder.hpp"
 #include <tuple>
 
+namespace curry {
+
 template<typename T>
 struct tuple_arity {
    static const int value = function_traits<T>::arity;
@@ -39,5 +41,7 @@ template<>
 struct tuple_arity<std::tuple<>> {
    static const int value = 0;
 };
+
+}
 
 #endif//_TUPLE_ARITY_HPP_
