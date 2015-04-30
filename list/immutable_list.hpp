@@ -1,7 +1,8 @@
 #ifndef _IMMUTABLE_LIST_HPP_
 #define _IMMUTABLE_LIST_HPP_
 
-#include "fn.hpp"
+#include "..\arity\function_traits.hpp"
+#include "..\util\fn_fwd.hpp"
 
 #include <cassert>
 #include <functional>

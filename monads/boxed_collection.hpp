@@ -1,7 +1,7 @@
 #ifndef _BOXED_COLLECTION_HPP_
 #define _BOXED_COLLECTION_HPP_
 
-#include "isabox.hpp"
+#include "..\monads\isabox.hpp"
 #include <vector>
 
 template<typename Vector>

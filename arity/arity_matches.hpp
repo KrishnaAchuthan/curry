@@ -1,8 +1,8 @@
 #ifndef _ARITY_MATCHES_HPP_
 #define _ARITY_MATCHES_HPP_
 
-#include "tuple_arity.hpp"
-#include "arity_increasing.hpp"
+#include "..\arity\tuple_arity.hpp"
+#include "..\arity\arity_increasing.hpp"
 
 template<typename T, typename ...A>
 struct arity_matches {

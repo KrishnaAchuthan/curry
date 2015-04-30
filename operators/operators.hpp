@@ -1,8 +1,8 @@
 #ifndef _OPERATORS_HPP_
 
-#include "fn.hpp"
-#include "placeholder.hpp"
-#include "function_traits.hpp"
+#include "..\util\fn_fwd.hpp"
+#include "..\arity\function_traits.hpp"
+#include "..\placeholders\placeholder.hpp"
 
 template<typename F, typename A, typename ...Rest>
 auto compose(F&& f, A&& a, Rest&&... rest) {

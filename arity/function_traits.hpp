@@ -1,9 +1,9 @@
 #ifndef _FUNCTION_TRAITS_HPP_
 #define _FUNCTION_TRAITS_HPP_
 
-#include "function_operator_exists.hpp"
-#include "tuple_arity.hpp"
-#include "fn_fwd.hpp"
+#include "..\arity\function_operator_exists.hpp"
+#include "..\arity\tuple_arity.hpp"
+#include "..\util\fn_fwd.hpp"
 #include <type_traits>
 
 template</*typename R, */bool b, int a>

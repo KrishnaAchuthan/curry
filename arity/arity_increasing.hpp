@@ -1,8 +1,8 @@
 #ifndef _ARITY_INCREASING_HPP_
 #define _ARITY_INCREASING_HPP_
 
-#include "placeholder.hpp"
-#include "fn_fwd.hpp"
+#include "..\placeholders\placeholder.hpp"
+#include "..\util\fn_fwd.hpp"
 
 template<typename ...A>
 struct arity_increasing;

@@ -1,6 +1,8 @@
 #ifndef _INT_LIST_HPP_
 #define _INT_LIST_HPP_
 
+#include <tuple>
+
 template<int ...I>
 struct int_list {
 };

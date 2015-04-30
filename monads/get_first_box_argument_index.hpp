@@ -1,9 +1,9 @@
 #ifndef _GET_FIRST_BOX_ARGUMENT_INDEX_HPP_
 #define _GET_FIRST_BOX_ARGUMENT_INDEX_HPP_
 
+#include "..\monads\isabox.hpp"
 #include <tuple>
 #include <type_traits>
-#include "isabox.hpp"
 
 template<int current_index, typename T, typename Enabler=void>
 struct get_first_box_argument_index_impl;

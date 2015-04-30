@@ -1,9 +1,9 @@
 #ifndef _ARG_CATEGORY_HPP_
 #define _ARG_CATEGORY_HPP_
 
-#include "fn_fwd.hpp"
-#include "int_list.hpp"
-#include "placeholder.hpp"
+#include "..\util\int_list.hpp"
+#include "..\util\fn_fwd.hpp"
+#include "..\placeholders\placeholder.hpp"
 #include <tuple>
 
 enum class ArgCategory { 

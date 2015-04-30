@@ -1,8 +1,8 @@
 #ifndef _TUPLE_ARITY_HPP_
 #define _TUPLE_ARITY_HPP_
 
-#include "fn_fwd.hpp"
-#include "placeholder.hpp"
+#include "..\util\fn_fwd.hpp"
+#include "..\placeholders\placeholder.hpp"
 #include <tuple>
 
 template<typename T>

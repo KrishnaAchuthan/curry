@@ -2,22 +2,23 @@
 #define _FN_FWD_HPP_
 
 #ifdef _MSC_FULL_VER 
-#define ConstExpr 
+//MSVC 2015 bug
+#define CONSTEXPR
 #else
-#define ConstExpr constexpr
+#define CONSTEXPR constexpr
 #endif
 
 template<typename F, typename T>
 struct fn_t;
 
 template<typename F>
-ConstExpr decltype(auto) fn(F&& f);
+CONSTEXPR decltype(auto) fn(F&& f);
 
 template<typename F, typename A, typename ...Rest>
-ConstExpr decltype(auto) fn(F&& f, A&& a, Rest&& ...rest);
+CONSTEXPR decltype(auto) fn(F&& f, A&& a, Rest&& ...rest);
 
 template<typename R, typename T, typename ...A>
-ConstExpr decltype(auto) fn(R T::* const f, A&& ...a);
+CONSTEXPR decltype(auto) fn(R T::* const f, A&& ...a);
 
 template<typename F>
 struct function_traits;

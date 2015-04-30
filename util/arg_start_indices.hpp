@@ -1,8 +1,8 @@
 #ifndef _ARG_START_INDICES_HPP_
 #define _ARG_START_INDICES_HPP_
 
-#include "tuple_arity.hpp"
-#include "int_list.hpp"
+#include "..\arity\tuple_arity.hpp"
+#include "..\util\int_list.hpp"
 #include <tuple>
 
 template<typename Result, int RunningTotal, typename T>

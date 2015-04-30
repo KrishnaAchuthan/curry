@@ -1,7 +1,7 @@
 #ifndef _MAYBE_HPP_
 #define _MAYBE_HPP_
 
-#include "isabox.hpp"
+#include "..\monads\isabox.hpp"
 #include <vector>
 
 template<typename T>

@@ -1,12 +1,12 @@
-#ifndef _fn_hpp_
-#define _fn_hpp_
+#ifndef _FN_HPP_
+#define _FN_HPP_
 
-#include "fn_fwd.hpp"
 #include "process.hpp"
-#include "arg_positions.hpp"
-#include "function_traits.hpp"
-#include "pointer_to_member.hpp"
-#include "wrap_fn.hpp"
+#include "arity\function_traits.hpp"
+#include "util\fn_fwd.hpp"
+#include "util\arg_positions.hpp"
+#include "util\pointer_to_member.hpp"
+#include "composition\wrap_fn.hpp"
 #include <tuple>
 #include <type_traits>
 
@@ -22,7 +22,7 @@ struct fn_t {
    }
 
    template<typename ...A>
-   ConstExpr decltype(auto) operator()(A&&... a) const& {
+   CONSTEXPR decltype(auto) operator()(A&&... a) const& {
       return process(F(_f), T(_t), std::forward<A>(a)...);
    }
 
@@ -32,7 +32,7 @@ struct fn_t {
    }
 
    template<typename ...A>
-   ConstExpr decltype(auto) compose(A&&... a) const& {
+   CONSTEXPR decltype(auto) compose(A&&... a) const& {
       return process(F(_f), T(_t), wrap_fn(std::forward<A>(a))...);
    }
 
@@ -47,17 +47,17 @@ private:
 };
 
 template<typename F>
-ConstExpr decltype(auto) fn(F&& f) {
+CONSTEXPR decltype(auto) fn(F&& f) {
    return fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(std::forward<F>(f));
 }
 
 template<typename F, typename A, typename ...Rest>
-ConstExpr decltype(auto) fn(F&& f, A&& a, Rest&& ...rest) {
+CONSTEXPR decltype(auto) fn(F&& f, A&& a, Rest&& ...rest) {
    return fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(std::forward<F>(f))(std::forward<A>(a), std::forward<Rest>(rest)...);
 }
 
 template<typename R, typename T, typename ...A>
-ConstExpr decltype(auto) fn(R T::* const f, A&& ...a) {
+CONSTEXPR decltype(auto) fn(R T::* const f, A&& ...a) {
    using F = pointer_to_member<R, T, R T::*>;
    return fn(F(f), std::forward<A>(a)...);
 }
@@ -69,4 +69,4 @@ struct cfn_t {
    F&& _f;
 };
 
-#endif//_fn_hpp_
+#endif//_FN_HPP_
