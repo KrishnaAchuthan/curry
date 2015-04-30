@@ -51,7 +51,7 @@
    auto f1 = fn(foo);                      //foo takes four arguments.
    auto f2 = f1(_, arg1, arg2, _);         //Some arguments are applied. It waits for more.
    
-   //Remaining arguments provided. Invokes foo(arg3, arg1, arg3, arg4)
+   //Remaining arguments provided. Invokes foo(arg3, arg1, arg2, arg4)
    auto f3 = f2(arg3, arg4);
 ```
 
