@@ -154,7 +154,7 @@ auto operator > (ph<I> lhs, Rhs&& rhs) {
 
 template<int I, int J>
 auto operator < (ph<I> lhs, ph<J> rhs) {
-   return fn(op([](auto&& lhs, auto&& rhs) {return lhs > rhs; }))(lhs, rhs);
+   return fn(op([](auto&& lhs, auto&& rhs) {return lhs < rhs; }))(lhs, rhs);
 }
 
 template<int I, typename Rhs>
