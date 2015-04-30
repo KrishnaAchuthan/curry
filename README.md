@@ -1,5 +1,15 @@
 ###Support for Curry and Function Composition in C++
 
+####What is this?
+A library to add simple functional constructs such as currying, function composition etc., to C++
+
+####Usage
+This is a header only library. Just include the file fn.hpp in your source code. The main function 'fn' and the related components are available inside the namespace 'curry'
+
+####Tools needed
+This project uses C++ 14 language features. It is successfully compiled under MSVC 2015, Clang 3.6.0 and GCC 4.92 (using the std=c++1y switch) 
+
+####Notes
 #####1. Can be enabled on - Global, Member, Functor and Lambda Functions as well as Member Variables.
 
 ```cpp
