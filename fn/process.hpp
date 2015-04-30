@@ -1,10 +1,10 @@
 #ifndef _PROCESS_HPP_
 #define _PROCESS_HPP_
 
-#include "invoke.hpp"
-#include "apply_arguments.hpp"
-#include "arity\arity_matches.hpp"
-#include "placeholders\add_anonymous_placeholder_support.hpp"
+#include "..\fn\invoke.hpp"
+#include "..\fn\apply_arguments.hpp"
+#include "..\arity\arity_matches.hpp"
+#include "..\placeholders\add_anonymous_placeholder_support.hpp"
 #include <tuple>
 #include <type_traits>
 

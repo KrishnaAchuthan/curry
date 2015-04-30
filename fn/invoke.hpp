@@ -1,10 +1,10 @@
 #ifndef _INVOKE_HPP_
 #define _INVOKE_HPP_
 
-#include "apply_tuple_to_function.hpp"
-#include "monads\get_first_box_argument_index.hpp"
-#include "util\fn_fwd.hpp"
-#include "util\int_list.hpp"
+#include "..\fn\apply_tuple_to_function.hpp"
+#include "..\monads\get_first_box_argument_index.hpp"
+#include "..\util\fn_fwd.hpp"
+#include "..\util\int_list.hpp"
 #include <type_traits>
 
 template<typename F, typename T>
