@@ -8,6 +8,7 @@
 #include <iostream>
 #include <initializer_list>
 #include <memory>
+#include <iterator>
 
 namespace curry {
 
@@ -24,7 +25,12 @@ struct immutable_list {
    immutable_list() : _head(nullptr) {}
    immutable_list(T v, immutable_list t) : _head(new immutable_list_item(v, t._head)) {}
    immutable_list(std::initializer_list<T> init) : _head(nullptr) {
-      for (auto it = std::rbegin(init); it != std::rend(init); ++it) {
+      using Iter = decltype(init.begin());
+      auto rev_beg = std::reverse_iterator<Iter>(init.end());
+      auto rev_end = std::reverse_iterator<Iter>(init.begin());
+      //rbegin, rend not supported by clang yet
+      //for (auto it = std::rbegin(init); it != std::rend(init); ++it) {
+      for (auto it = rev_beg; it != rev_end; ++it) {
          _head = std::shared_ptr<const immutable_list_item>(new immutable_list_item(*it, _head));
       }
    }
@@ -120,8 +126,6 @@ auto fmap = fn(fmap_impl());
 struct filter_impl {
    template<class T, class P>
    immutable_list<T> operator()(P p, immutable_list<T> lst) const {
-      using U = decltype(f(std::declval<T>()));
-      static_assert(std::is_convertible<F, std::function<U(T)>>::value, "filter requires a function type U(T)");
       if (empty(lst)) {
          return immutable_list<T>();
       }
@@ -143,12 +147,11 @@ auto filter = fn(filter_impl());
 struct foldr_impl {
    template<class T, class U, class F>
    U operator()(F f, U acc, immutable_list<T> lst) const {
-      static_assert(std::is_convertible<F, std::function<U(T)>>::value, "foldr requires a function type U(T)");
       if (empty(lst)) {
          return acc;
       }
       else {
-         return f(head(lst), foldr(f, acc, tail(lst)));
+         return f(head(lst), foldr_impl()(f, acc, tail(lst)));
       }
    }
 };
@@ -162,7 +165,6 @@ auto foldr = fn(foldr_impl());
 struct foldl_impl {
    template<class T, class U, class F>
    U operator()(F f, U acc, immutable_list<T> lst) const {
-      static_assert(std::is_convertible<F, std::function<U(T)>>::value, "foldl requires a function type U(T)");
       if (empty(lst)) {
          return acc;
       }

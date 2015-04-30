@@ -4,6 +4,7 @@
 #include "..\util\fn_fwd.hpp"
 #include "..\util\int_list.hpp"
 #include "..\placeholders\placeholder.hpp"
+#include "..\monads\isabox.hpp"
 #include <tuple>
 #include <type_traits>
 

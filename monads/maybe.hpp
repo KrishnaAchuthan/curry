@@ -80,10 +80,10 @@ struct isabox<maybe_t<T>> : std::true_type{
       if (m.is_valid()) {
          ResultT result;
          if (box_map_impl(f(m.get()), [&result](auto&& item) { result = item; })) {
-            return maybe(std::move(result));
+            return maybe_t<ResultT>(std::move(result));
          }
       }
-      return maybe<ResultT>();
+      return maybe_t<ResultT>();
    }
 };
 
