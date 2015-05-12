@@ -10,7 +10,7 @@ This is a header only library. Just include the file fn.hpp in your source code.
 This project uses C++ 14 language features. It is successfully compiled under MSVC 2015, Clang 3.6.0 and GCC 4.92 (using the std=c++1y switch) 
 
 ####Notes
-#####1. Can be enabled on - Global, Member, Functor and Lambda Functions as well as Member Variables.
+#####1. Enabling currying - Global, Member, Functor and Lambda Functions as well as Member Variables.
 
 ```cpp
     auto f1 = fn(foo);            //Global function.
