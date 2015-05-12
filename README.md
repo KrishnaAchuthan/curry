@@ -153,16 +153,22 @@ This project uses C++ 14 language features. It is successfully compiled under MS
    auto is_lst_empty = empty(lst); //result will be false
 
    auto second_item_of_lst3 = head(tail(lst3)); //result will be 2
+```
+
+#####12. Higher Order Functions
+
+```cpp
+   auto lst = make_list<int>({1,2,3,4,5,6,7,8,9});
 
    auto square = fmap(_1*_1); //on the fly function creation with curried fmap application
-   auto fmap_result = square(lst3); //result will be [1,2,9,16,25,36,49,64,81]
+   auto fmap_result = square(lst); //result will be [1,2,9,16,25,36,49,64,81]
 
    auto sum = foldl(_+_, 0);     //curried foldl application
    auto product = foldr(_*_, 1); //curried foldr application
 
-   auto sum_result = sum(lst3);  //result will be 45
+   auto sum_result = sum(lst);  //result will be 45
    std::cout << sum_result << std::endl;
 
-   auto product_result = lst3 | product; //result will be 362880
+   auto product_result = lst | product; //result will be 362880
    std::cout << product_result << std::endl;
 ```
