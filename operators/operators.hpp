@@ -31,6 +31,16 @@ auto operator | (A&& a, fn_t<F, T>&& f) {
    return compose(std::forward<fn_t<F, T>>(f), std::forward<A>(a));
 }
 
+template<typename F, typename A, typename Void=std::enable_if<function_traits<F>::is_function>>
+auto operator | (A&& a, const F& f) {
+   return compose(fn(f), std::forward<A>(a));
+}
+
+template<typename F, typename A, typename Void = std::enable_if<function_traits<F>::is_function>>
+auto operator | (A&& a, F&& f) {
+   return compose(fn(std::forward<F>(f)), std::forward<A>(a));
+}
+
 template<typename F1, typename T1, typename F2, typename T2>
 auto operator | (const fn_t<F1, T1>& f1, const fn_t<F2, T2>& f2) {
    return compose(f2, f1);

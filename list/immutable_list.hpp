@@ -94,7 +94,7 @@ auto operator+(T v, immutable_list<T> lst) {
    return immutable_list<T>(std::move(v), lst);
 }
 
-template<class T>
+template<typename T>
 auto operator+(immutable_list<T> a, immutable_list<T> b) {
    if (empty(a)) {
       return b;
@@ -103,7 +103,7 @@ auto operator+(immutable_list<T> a, immutable_list<T> b) {
 }
 
 struct fmap_impl {
-   template<class T, class F>
+   template<typename T, typename F>
    auto operator()(F f, immutable_list<T> lst) const 
    -> immutable_list<decltype(f(std::declval<T>()))> {
       using U = decltype(f(std::declval<T>()));
@@ -124,7 +124,7 @@ struct function_traits<fmap_impl> {
 auto fmap = fn(fmap_impl());
 
 struct filter_impl {
-   template<class T, class P>
+   template<typename T, typename P>
    immutable_list<T> operator()(P p, immutable_list<T> lst) const {
       if (empty(lst)) {
          return immutable_list<T>();
@@ -145,7 +145,7 @@ struct function_traits<filter_impl> {
 auto filter = fn(filter_impl());
 
 struct foldr_impl {
-   template<class T, class U, class F>
+   template<typename T, typename U, typename F>
    U operator()(F f, U acc, immutable_list<T> lst) const {
       if (empty(lst)) {
          return acc;
@@ -153,6 +153,14 @@ struct foldr_impl {
       else {
          return f(head(lst), foldr_impl()(f, acc, tail(lst)));
       }
+   }
+   template<typename Container, typename T, typename U, typename F>
+   U operator()(F f, U acc, Container c) const {
+      //TODO: should iterate in reverse order - later
+      for (const auto& i : c) {
+         acc = f(acc, i);
+      }
+      return acc;
    }
 };
 template<>
@@ -163,7 +171,7 @@ struct function_traits<foldr_impl> {
 auto foldr = fn(foldr_impl());
 
 struct foldl_impl {
-   template<class T, class U, class F>
+   template<typename T, typename U, typename F>
    U operator()(F f, U acc, immutable_list<T> lst) const {
       if (empty(lst)) {
          return acc;
@@ -171,6 +179,13 @@ struct foldl_impl {
       else {
          return foldl_impl()(f, f(acc, head(lst)), tail(lst));
       }
+   }
+   template<typename T, typename U, typename F>
+   U operator()(F f, U acc, std::vector<T> c) const {
+      for (const auto& i : c) {
+         acc = f(acc, i);
+      }
+      return acc;
    }
 };
 template<>
@@ -180,26 +195,26 @@ struct function_traits<foldl_impl> {
 };
 auto foldl = fn(foldl_impl());
 
-struct for_each_impl {
-   template<class T, class F>
-   void operator()(immutable_list<T> lst, F f) const {
-      using U = decltype(f(std::declval<T>()));
-      static_assert(std::is_convertible<F, std::function<U(T)>>::value, "foldl requires a function type U(T)");
-      if (!empty(lst)) {
-         f(head(lst));
-         for_each_impl()(tail(lst), f);
-      }
-   }
-};
-template<>
-struct function_traits<for_each_impl> {
-   static const bool is_function = true;
-   static const int arity = 2;
-};
-auto for_each = fn(for_each_impl());
+//struct for_each_impl {
+//   template<class T, class F>
+//   void operator()(immutable_list<T> lst, F f) const {
+//      using U = decltype(f(std::declval<T>()));
+//      static_assert(std::is_convertible<F, std::function<U(T)>>::value, "foldl requires a function type U(T)");
+//      if (!empty(lst)) {
+//         f(head(lst));
+//         for_each_impl()(tail(lst), f);
+//      }
+//   }
+//};
+//template<>
+//struct function_traits<for_each_impl> {
+//   static const bool is_function = true;
+//   static const int arity = 2;
+//};
+//auto for_each = fn(for_each_impl());
 
 struct show_impl {
-   template<class T>
+   template<typename T>
    void operator()(immutable_list<T> lst) const {
       for_each(lst, [](T v) {
          std::cout << "(" << v << ") ";

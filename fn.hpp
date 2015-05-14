@@ -53,6 +53,11 @@ CONSTEXPR decltype(auto) fn(F&& f) {
    return fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(std::forward<F>(f));
 }
 
+template<unsigned int Arity, typename F>
+CONSTEXPR decltype(auto) fn(F&& f) {
+   return fn_t<F, typename arg_positions<Arity>::type>(std::forward<F>(f));
+}
+
 template<typename F, typename A, typename ...Rest>
 CONSTEXPR decltype(auto) fn(F&& f, A&& a, Rest&& ...rest) {
    return fn_t<F, typename arg_positions<function_traits<F>::arity>::type>(std::forward<F>(f))(std::forward<A>(a), std::forward<Rest>(rest)...);

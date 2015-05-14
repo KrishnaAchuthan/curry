@@ -10,6 +10,11 @@ template<typename T>
 struct maybe_t {
    maybe_t() : _value(), _is_valid(false) {
    }
+   maybe_t(const maybe_t& other) : _value(), _is_valid(other._is_valid)
+   {
+   }
+   maybe_t(maybe_t&& other) : _value(std::move(other._value)), _is_valid(other._is_valid) {
+   }
    maybe_t(T&& value) : _value(std::move(value)), _is_valid(true) {
    }
    bool is_valid() const { return _is_valid; }
@@ -65,6 +70,11 @@ struct isabox<maybe_t<T>> : std::true_type{
       f(item);
       return true;
    }
+   template<typename Item, typename F>
+   static auto box_map_impl(Item&& item, F f) {
+      f(std::move(item));
+      return true;
+   }
 
    template<typename OtherT, typename F>
    static auto box_map_impl(const maybe_t<OtherT>& m, F f) {
@@ -73,13 +83,33 @@ struct isabox<maybe_t<T>> : std::true_type{
       }
       return false;
    }
+   template<typename OtherT, typename F>
+   static auto box_map_impl(maybe_t<OtherT>&& m, F f) {
+      if (m.is_valid() && box_map_impl(m.get(), [&f](auto&& item) { f(std::move(item)); })) {
+         return true;
+      }
+      return false;
+   }
 
    template<typename F>
    static auto box_map(const maybe_t<T>& m, F f) {
-      using ResultT = typename box_map_value_t<T>::type;
+      //using ResultT = typename box_map_value_t<T>::type;
+      using ResultT = typename box_map_value_t<decltype(f(m.get()))>::type;
       if (m.is_valid()) {
          ResultT result;
          if (box_map_impl(f(m.get()), [&result](auto&& item) { result = item; })) {
+            return maybe_t<ResultT>(std::move(result));
+         }
+      }
+      return maybe_t<ResultT>();
+   }
+   template<typename F>
+   static auto box_map(maybe_t<T>&& m, F f) {
+      //using ResultT = typename box_map_value_t<T>::type;
+      using ResultT = typename box_map_value_t<decltype(f(std::declval<T>()))>::type;
+      if (m.is_valid()) {
+         ResultT result;
+         if (box_map_impl(f(std::move(m).get()), [&result](auto&& item) { result = std::move(item); })) {
             return maybe_t<ResultT>(std::move(result));
          }
       }

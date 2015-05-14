@@ -62,7 +62,7 @@ struct function_traits_impl<b, fn_t<F, T>>
 
 template<typename F>
 struct function_traits
-   : function_traits_impl<function_operator_exists<F>::value, F> {
+   : function_traits_impl<function_operator_exists<F>::value, std::decay_t<F>> {
 };
 
 }
