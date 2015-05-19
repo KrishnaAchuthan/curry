@@ -45,9 +45,9 @@ namespace curry
       };
       struct find_if_fn
       {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::find_if(f, l, func);
+         template<typename I, typename T>
+         decltype(auto) operator()(I f, I l, const T& val) {
+            return std::find_if(f, l, vsl);
          }
       };
       struct find_if_not_fn
@@ -57,77 +57,133 @@ namespace curry
             return std::find_if_not(f, l, func);
          }
       };
-      struct find_end_fn
+	  struct find_end_fn
+	  {
+		  template<typename I1, typename I2>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, I2 l2) {
+			  return std::find_end(f1, l1, f2, l2);
+		  }
+	  };
+	  struct find_end_pred_fn
+	  {
+		  template<typename I1, typename I2, typename P>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, I2 l2, P pred) {
+			  return std::find_end(f1, l1, f2, l2, pred);
+		  }
+	  };
+	  struct find_first_of_fn
+	  {
+		  template<typename I1, typename I2>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, I2 l2) {
+			  return std::find_first_of(f1, l1, f2, l2);
+		  }
+	  };
+	  struct find_first_of_pred_fn
+	  {
+		  template<typename I1, typename I2, typename P>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, I2 l2, P pred) {
+			  return std::find_first_of(f1, l1, f2, l2, pred);
+		  }
+	  };
+	  struct adjacent_find_fn
+	  {
+		  template<typename I>
+		  decltype(auto) operator()(I f, I l) {
+			  return std::adjacent_find(f, l);
+		  }
+	  };
+	  struct adjacent_find_pred_fn
+	  {
+		  template<typename I, typename P>
+		  decltype(auto) operator()(I f, I l, P pred) {
+			  return std::adjacent_find(f, l, pred);
+		  }
+	  };
+	  struct count_fn
       {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::find_end(f, l, func);
-         }
-      };
-      struct find_first_of_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::find_first_of(f, l, func);
-         }
-      };
-      struct adjacent_find_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::adjacent_find(f, l, func);
-         }
-      };
-      struct count_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::count(f, l, func);
+         template<typename I, typename T>
+         decltype(auto) operator()(I f, I l, const T& val) {
+            return std::count(f, l, val);
          }
       };
       struct count_if_fn
       {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::count_if(f, l, func);
+         template<typename I, typename P>
+         decltype(auto) operator()(I f, I l, P pred) {
+            return std::count_if(f, l, pred);
          }
       };
-      struct mismatch_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::mismatch(f, l, func);
-         }
-      };
-      struct equal_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::equal(f, l, func);
-         }
-      };
-      struct is_permutation_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::is_permutation(f, l, func);
-         }
-      };
-      struct search_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::search(f, l, func);
-         }
-      };
-      struct search_n_fn
-      {
-         template<typename I, typename F>
-         decltype(auto) operator()(I f, I l, F func) {
-            return std::search_n(f, l, func);
-         }
-      };
-      struct copy_fn
+	  struct mismatch_fn
+	  {
+		  template<typename I1, typename I2>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2) {
+			  return std::mismatch(f1, l1, f2);
+		  }
+	  };
+	  struct mismatch_pred_fn
+	  {
+		  template<typename I1, typename I2, typename P>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, P pred) {
+			  return std::mismatch(f1, l1, f2, pred);
+		  }
+	  };
+	  struct equal_fn
+	  {
+		  template<typename I1, typename I2>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2) {
+			  return std::equal(f1, l1, f2);
+		  }
+	  };
+	  struct equal_pred_fn
+	  {
+		  template<typename I1, typename I2, typename P>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, P pred) {
+			  return std::equal(f1, l1, f2, pred);
+		  }
+	  };
+	  struct is_permutation_fn
+	  {
+		  template<typename I1, typename I2>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2) {
+			  return std::is_permutation(f1, l1, f2);
+		  }
+	  };
+	  struct is_permutation_pred_fn
+	  {
+		  template<typename I1, typename I2, typename P>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, P pred) {
+			  return std::is_permutation(f1, l1, f2, pred);
+		  }
+	  };
+	  struct search_fn
+	  {
+		  template<typename I1, typename I2>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2) {
+			  return std::search(f1, l1, f2, l2);
+		  }
+	  };
+	  struct search_pred_fn
+	  {
+		  template<typename I1, typename I2, typename P>
+		  decltype(auto) operator()(I1 f1, I1 l1, I2 f2, P pred) {
+			  return std::search(f1, l1, f2, l2, pred);
+		  }
+	  };
+	  struct search_n_fn
+	  {
+		  template<typename I, typename Size, typename T>
+		  decltype(auto) operator()(I f, I l, Size count, const T& val) {
+			  return std::search_n(f, l, count, val);
+		  }
+	  };
+	  struct search_n_pred_fn
+	  {
+		  template<typename I, typename Size, typename T, typename P>
+		  decltype(auto) operator()(I f, I l, Size count, const T& val, P pred) {
+			  return std::search_n(f, l, count, val, pred);
+		  }
+	  };
+	  struct copy_fn
       {
          template<typename I, typename F>
          decltype(auto) operator()(I f, I l, F func) {
