@@ -1,7 +1,7 @@
 ###Support for Curry and Function Composition in C++
 
 ####What is this?
-A library to add simple functional constructs such as currying, function composition etc., to C++
+Functional programming languages such as Haskell has features such as currying, function composition etc. This library is an attempt to bring such features into C++ using modern techniques available in C++14.
 
 ####Usage
 This is a header only library. Just include the file fn.hpp in your source code. The main function 'fn' and the related components are available inside the namespace 'curry'
